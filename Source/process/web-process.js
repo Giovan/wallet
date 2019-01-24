@@ -195,10 +195,15 @@ function MainHTTPFunction(request,response)
         let postData = "";
         request.addListener("data", function (postDataChunk)
         {
-            if(postData.length <= 1024 && postDataChunk.length <= 1024)
+            if(postData.length <= 8192 && postDataChunk.length <= 8192)
                 postData += postDataChunk;
             else
-                ToLog("Error postDataChunk.length=" + postDataChunk.length);
+            {
+                var Str = "Error postDataChunk.length=" + postDataChunk.length;
+                ToLog(Str);
+                Response.writeHead(405, {'Content-Type':'text/html'});
+                Response.end(Str);
+            }
         });
         request.addListener("end", function ()
         {

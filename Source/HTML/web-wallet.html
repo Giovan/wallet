@@ -39,15 +39,10 @@
         window.onload=function()
         {
             LoadSignLib();
-            var LocationPath;
-            if(window.location.hash)
-            {
-                LocationPath=window.location.hash.substr(1);
-                if(LocationPath.toUpperCase()==="TEST")
-                {
-                    InitTestEnv();
-                }
-            }
+
+            if(localStorage["NETWORK"])
+                NETWORK=localStorage["NETWORK"];
+
 
 
             LoadValues();
@@ -67,11 +62,34 @@
             {
                 SetDiagramMouseX(event);
             }
-            if(LocationPath)
+
+            if(window.location.hash)
             {
-                SelectTab(LocationPath);
+                var LocationPath=window.location.hash.substr(1);
+                if(LocationPath)
+                {
+                    SelectTab(LocationPath);
+                }
             }
         }
+
+        function ChangeNetwork()
+        {
+            if(NETWORK==="TERA-TEST")
+            {
+                NETWORK="TERA-MAIN";
+            }
+            else
+            {
+                NETWORK="TERA-TEST";
+            }
+            localStorage["NETWORK"]=NETWORK;
+            StartWebWallet();
+
+            UpdatesExplorerData();
+            UpdatesAccountsData();
+        }
+
 
         function OnFindServer()
         {
@@ -746,7 +764,7 @@
         {
             top:0px;
             right:10px;
-            text-align: right;
+            text-align: center;
             width:100px;
             height: 20px;
             color: #286798;
@@ -777,7 +795,7 @@
                 <th><DIV id="MTabExplorer" onclick="SelectTab('TabExplorer')" class="bttab">EXPLORER</DIV></th>
             </tr>
         </table>
-        <table><tr><td><DIV id="idStatus">&nbsp;</DIV></td><td><DIV id="idNetwork"></DIV></td></tr></table>
+        <table><tr><td><DIV id="idStatus">&nbsp;</DIV></td><td><button id="idNetwork" onclick="ChangeNetwork()"></button></td></tr></table>
 
 
         <DIV id="TabLogo" style="display: block;">
