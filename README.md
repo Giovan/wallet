@@ -168,7 +168,7 @@ sudo pm2 start run-test.js
 * Algorithm:  Terahash (sha3 + Optimize RAM hashing)
 * Total suplay: 1 Bln
 * Reward for block: 1-20 coins, depends on miner power (one billionth of the remainder of undistributed amount of coins and multiplied by the hundredth part of the square of the logarithm of the miner power)
-* Block size 120 KB
+* Block size 130 KB
 * Premine: 5%
 * Development fund: 1% of the mining amount
 * Block generation time: 1 second

@@ -113,7 +113,7 @@ function Utf8ArrayToStr(e)
                 a = e[i++], o = e[i++], t += String.fromCharCode((15 & n) << 12 | (63 & a) << 6 | (63 & o) << 0);
         }
     for(var i = 0; i < t.length; i++)
-        if(t.charCodeAt(i) < 32)
+        if(0 === t.charCodeAt(i))
         {
             t = t.substr(0, i);
             break;
@@ -908,6 +908,11 @@ function CanClientSign()
 {
     var e = localStorage.idPrivKey;
     return IsHexStr(e) && 64 === e.length ? 1 : 0;
+};
+
+function random(e)
+{
+    return Math.floor(Math.random() * e);
 };
 Number.prototype.toStringF = function ()
 {

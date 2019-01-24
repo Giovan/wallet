@@ -11,70 +11,70 @@
 
 var MAX_SUPER_VALUE_POW = 2 * (1 << 30);
 
-function GetHashWithValues(r,e,t,n)
+function GetHashWithValues(r,t,e,n)
 {
-    var a;
-    return (a = n ? r : r.slice())[0] = 255 & e, a[1] = e >>> 8 & 255, a[2] = e >>> 16 & 255, a[3] = e >>> 24 & 255, a[4] = 255 & t,
-    a[5] = t >>> 8 & 255, a[6] = t >>> 16 & 255, a[7] = t >>> 24 & 255, shaarr(a);
+    var o;
+    return (o = n ? r : r.slice())[0] = 255 & t, o[1] = t >>> 8 & 255, o[2] = t >>> 16 & 255, o[3] = t >>> 24 & 255, o[4] = 255 & e,
+    o[5] = e >>> 8 & 255, o[6] = e >>> 16 & 255, o[7] = e >>> 24 & 255, shaarr(o);
 };
 
 function GetPowPower(r)
 {
-    for(var e = 0, t = 0; t < r.length; t++)
+    for(var t = 0, e = 0; e < r.length; e++)
     {
-        var n = Math.clz32(r[t]) - 24;
-        if(e += n, 8 !== n)
+        var n = Math.clz32(r[e]) - 24;
+        if(t += n, 8 !== n)
             break;
     }
-    return e;
+    return t;
 };
 
 function GetPowValue(r)
 {
-    var e = 2 * (r[0] << 23) + (r[1] << 16) + (r[2] << 8) + r[3];
-    return e = 256 * (e = 256 * e + r[4]) + r[5];
+    var t = 2 * (r[0] << 23) + (r[1] << 16) + (r[2] << 8) + r[3];
+    return t = 256 * (t = 256 * t + r[4]) + r[5];
 };
 
-function CreateNoncePOWExtern(r,e,t,n)
+function CreateNoncePOWExtern(r,t,e,n)
 {
-    for(var a = [], o = 0; o < r.length; o++)
-        a[o] = r[o];
+    for(var o = [], a = 0; a < r.length; a++)
+        o[a] = r[a];
     n || (n = 0);
-    for(var T = 0, _ = MAX_SUPER_VALUE_POW, E = n; E <= n + t; E++)
+    for(var i = 0, E = MAX_SUPER_VALUE_POW, T = n; T <= n + e; T++)
     {
-        var i = GetPowValue(GetHashWithValues(a, E, e, !0));
-        i < _ && (T = E, _ = i);
+        var _ = GetPowValue(GetHashWithValues(o, T, t, !0));
+        _ < E && (i = T, E = _);
     }
-    return T;
+    return i;
 };
 
-function CreateHashBody(r,e,t)
+function CreateHashBody(r,t,e)
 {
     var n = r.length - 12;
-    r[n + 0] = 255 & e, r[n + 1] = e >>> 8 & 255, r[n + 2] = e >>> 16 & 255, r[n + 3] = e >>> 24 & 255, r[n + 4] = 0, r[n + 5] = 0,
-    r[(n = r.length - 6) + 0] = 255 & t, r[n + 1] = t >>> 8 & 255, r[n + 2] = t >>> 16 & 255, r[n + 3] = t >>> 24 & 255, r[n + 4] = 0,
+    r[n + 0] = 255 & t, r[n + 1] = t >>> 8 & 255, r[n + 2] = t >>> 16 & 255, r[n + 3] = t >>> 24 & 255, r[n + 4] = 0, r[n + 5] = 0,
+    r[(n = r.length - 6) + 0] = 255 & e, r[n + 1] = e >>> 8 & 255, r[n + 2] = e >>> 16 & 255, r[n + 3] = e >>> 24 & 255, r[n + 4] = 0,
     r[n + 5] = 0;
-    for(var a = sha3(r), o = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    T = 0; T < TR_TICKET_HASH_LENGTH; T++)
-        o[T] = a[T];
-    return WriteUintToArrOnPos(o, e, TR_TICKET_HASH_LENGTH), sha3(o);
+    for(var o = sha3(r), a = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    i = 0; i < TR_TICKET_HASH_LENGTH; i++)
+        a[i] = o[i];
+    return WriteUintToArrOnPos(a, t, TR_TICKET_HASH_LENGTH), sha3(a);
 };
 
 function GetBlockNumTr(r)
 {
-    var e = window.DELTA_FOR_TIME_TX + GetCurrentBlockNumByTime();
+    var t = window.DELTA_FOR_TIME_TX + GetCurrentBlockNumByTime();
     if(r[0] === TYPE_TRANSACTION_CREATE)
     {
-        var t = 10 * Math.floor(e / 10);
-        t < e && (t += 10), e = t;
+        var e = 10 * Math.floor(t / 10);
+        e < t && (e += 10), t = e;
     }
-    return e;
+    return t;
 };
 window.TYPE_TRANSACTION_CREATE = 100, window.TR_TICKET_HASH_LENGTH = 10, window.DELTA_FOR_TIME_TX = 0, window.MIN_POWER_POW_TR = 0,
 window.MIN_POWER_POW_ACC_CREATE = 0, window.CONSENSUS_PERIOD_TIME = 1e3, window.FIRST_TIME_BLOCK = 15304464e5, window.SetBlockChainConstant = function (r)
 {
-    var e = new Date - r.CurTime;
-    r.DELTA_CURRENT_TIME || (r.DELTA_CURRENT_TIME = 0), window.DELTA_CURRENT_TIME2 = r.DELTA_CURRENT_TIME - e, window.MIN_POWER_POW_TR = r.MIN_POWER_POW_TR,
+    var t = new Date - r.CurTime;
+    r.DELTA_CURRENT_TIME || (r.DELTA_CURRENT_TIME = 0), window.DELTA_CURRENT_TIME2 = r.DELTA_CURRENT_TIME - t, window.MIN_POWER_POW_TR = r.MIN_POWER_POW_TR,
     window.MIN_POWER_POW_ACC_CREATE = r.MIN_POWER_POW_ACC_CREATE + 3, window.FIRST_TIME_BLOCK = r.FIRST_TIME_BLOCK, window.CONSENSUS_PERIOD_TIME = r.CONSENSUS_PERIOD_TIME,
     window.GetCurrentBlockNumByTime = function ()
     {
@@ -87,40 +87,40 @@ window.MIN_POWER_POW_ACC_CREATE = 0, window.CONSENSUS_PERIOD_TIME = 1e3, window.
 };
 var LastCreatePOWTrType = 0, LastCreatePOWBlockNum = 0, LastCreatePOWHash = [255, 255, 255, 255];
 
-function CreateHashBodyPOWInnerMinPower(r,e)
+function CreateHashBodyPOWInnerMinPower(r,t)
 {
-    var t = r[0], n = GetBlockNumTr(r);
-    void 0 === e && (e = MIN_POWER_POW_TR + Math.log2(r.length / 128));
-    for(var a = 0; ; )
+    var e = r[0], n = GetBlockNumTr(r);
+    void 0 === t && (t = MIN_POWER_POW_TR + Math.log2(r.length / 128));
+    for(var o = 0; ; )
     {
-        var o = CreateHashBody(r, n, a);
-        if(e <= GetPowPower(o) && !(LastCreatePOWBlockNum === n && LastCreatePOWTrType === t && 0 < CompareArr(LastCreatePOWHash, o)))
-            return LastCreatePOWBlockNum = n, LastCreatePOWTrType = t, LastCreatePOWHash = o, a;
-        ++a % 2e3 == 0 && (n = GetBlockNumTr(r));
+        var a = CreateHashBody(r, n, o);
+        if(t <= GetPowPower(a) && !(LastCreatePOWBlockNum === n && LastCreatePOWTrType === e && 0 < CompareArr(LastCreatePOWHash, a)))
+            return LastCreatePOWBlockNum = n, LastCreatePOWTrType = e, LastCreatePOWHash = a, o;
+        ++o % 2e3 == 0 && (n = GetBlockNumTr(r));
     }
 };
 
-function CalcHashFromArray(r,e)
+function CalcHashFromArray(r,t)
 {
-    void 0 === e && r.sort(CompareArr);
-    for(var t = [], n = 0; n < r.length; n++)
-        for(var a = r[n], o = 0; o < a.length; o++)
-            t.push(a[o]);
-    return 0 === t.length ? [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] : 32 === t.length ? t : shaarr(t);
+    void 0 === t && r.sort(CompareArr);
+    for(var e = [], n = 0; n < r.length; n++)
+        for(var o = r[n], a = 0; a < o.length; a++)
+            e.push(o[a]);
+    return 0 === e.length ? [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] : 32 === e.length ? e : shaarr(e);
 };
 
 function GetArrFromValue(r)
 {
-    var e = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    e[0] = 255 & r, e[1] = r >>> 8 & 255, e[2] = r >>> 16 & 255, e[3] = r >>> 24 & 255;
-    var t = Math.floor(r / 4294967296);
-    return e[4] = 255 & t, e[5] = t >>> 8 & 255, e;
+    var t = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    t[0] = 255 & r, t[1] = r >>> 8 & 255, t[2] = r >>> 16 & 255, t[3] = r >>> 24 & 255;
+    var e = Math.floor(r / 4294967296);
+    return t[4] = 255 & e, t[5] = e >>> 8 & 255, t;
 };
 
 function LoadLib(r)
 {
-    var e = document.createElement("script");
-    e.type = "text/javascript", e.src = r, document.getElementsByTagName("head")[0].appendChild(e);
+    var t = document.createElement("script");
+    t.type = "text/javascript", t.src = r, document.getElementsByTagName("head")[0].appendChild(t);
 };
 
 function IsMS()
@@ -131,4 +131,92 @@ function IsMS()
 function LoadSignLib()
 {
     window.SignLib || LoadLib("./JS/sign-lib-min.js");
+};
+
+function ComputeSecretWithCheck(r,t,e)
+{
+    if(window.SignLib)
+        if(IsHexStr(t) && 64 === t.length)
+        {
+            var n = Buffer.from(GetArrFromHex(t));
+            if("string" == typeof r)
+            {
+                if(!IsHexStr(r) || 66 !== r.length)
+                    return void SetError("Error PubKey");
+                r = Buffer.from(GetArrFromHex(r));
+            }
+            var o = SignLib.ecdh(r, n);
+            e(sha3(o));
+        }
+        else
+            SetError("Error set PrivKey");
+    else
+        SetError("Error - SignLib not installed");
+};
+
+function ComputeSecret(t,e)
+{
+    localStorage.idPrivKey ? ComputeSecretWithCheck(t, localStorage.idPrivKey, e) : GetData("GetWalletInfo", {}, function (r)
+    {
+        r && r.result && ComputeSecretWithCheck(t, r.PrivateKey, e);
+    });
+};
+
+function Encrypt(r,t,e,n)
+{
+    var o = sha3arr2(r, sha3(e + t));
+    return DoSecret(toUTF8Array(n), o);
+};
+
+function Decrypt(r,t,e,n)
+{
+    if(!r)
+        return "".padEnd(n.length / 2, ".");
+    "string" == typeof n && (n = GetArrFromHex(n));
+    var o = DoSecret(n, sha3arr2(r, sha3(e + t)));
+    return Utf8ArrayToStr(o);
+};
+
+function DoSecret(r,t)
+{
+    for(var e = [], n = 0, o = 0; o < r.length; )
+    {
+        WriteUintToArrOnPos(t, ++n, 0);
+        for(var a = sha3(t), i = 0; i < 32 && o < r.length; i++, o++)
+            e[o] = r[o] ^ a[i];
+    }
+    return e;
+};
+var glEncryptInit = 0;
+
+function EncryptInit()
+{
+    glEncryptInit++;
+    var r = Date.now() - new Date(2019, 0, 1);
+    return 100 * Math.floor(100 * r + 100 * Math.random()) + glEncryptInit;
+};
+
+function EncryptID(r,t,e)
+{
+    var n = $(e).value;
+    return n = n.padEnd(n.length + random(5), " "), GetHexFromArr(Encrypt(r, t, e, n));
+};
+
+function EncryptFields(r,t,e)
+{
+    t.Crypto || (t.Crypto = EncryptInit());
+    for(var n = 0; n < e.length; n++)
+    {
+        var o = e[n], a = t[o];
+        a = a.padEnd(a.length + random(5), " "), t[o] = GetHexFromArr(Encrypt(r, t.Crypto, o, a));
+    }
+};
+
+function DecryptFields(r,t,e)
+{
+    for(var n = 0; n < e.length; n++)
+    {
+        var o = e[n];
+        t[o] && (t[o] = Decrypt(r, t.Crypto, o, GetArrFromHex(t[o])));
+    }
 };

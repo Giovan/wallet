@@ -202,6 +202,20 @@
                     window.location.hash="#"+Data.Message;
                     break;
                 }
+                case "OpenLink":
+                {
+                    window.open(Data.Message);
+                    break;
+                }
+                case "ComputeSecret":
+                {
+                    ComputeSecret(Data.PubKey,function (Result)
+                    {
+                        Data.Result=Result;
+                        SendMessage(Data);
+                    });
+                    break;
+                }
 
 
             }
@@ -274,6 +288,7 @@
             if(!window.sha3)
                 LoadLib("./JS/sha3.js");
             LoadSignLib();
+
         }
 
         function CreateFrame(SetData)
@@ -415,7 +430,7 @@
 <script>
     var glDebugPath="";
 //        glDebugPath="./dapp-smart/forum.html";
-     //   glDebugPath="./dapp-smart/DEX.html";
+//        glDebugPath="./dapp-smart/DEX.html";
     //glDebugPath="./dapp-smart/test-load.html";
     //    glDebugPath="./dapp-smart/gambling-1.html";
     //   glDebugPath="./dapp-smart/BTC-coin.html";
@@ -424,6 +439,29 @@
 
     //glDebugPath="./dapp-smart/OnlineStore.html";
     //{"HTMLBlock":17035437,"HTMLTr":0}
-    //873
+
+//    setTimeout(function ()
+//    {
+//        if(!window.SignLib)
+//            console.log("Error window.SignLib");
+//        else
+//            console.log("OK window.SignLib");
+//
+//        //test use of common secret
+//
+//        var PrivKey=Buffer.from([2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2]);
+//        var PubKey=SignLib.publicKeyCreate(PrivKey,1);
+//
+//        var PrivKey2=Buffer.from([3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3]);
+//        var PubKey2=SignLib.publicKeyCreate(PrivKey2,1);
+//        var Secret = SignLib.ecdh(PubKey, PrivKey2);
+//
+//        console.log("Secret="+GetHexFromArr(sha3(Secret)));
+//        var Secret2 = SignLib.ecdh(PubKey2, PrivKey);
+//        console.log("Secret2="+GetHexFromArr(sha3(Secret2)));
+//
+//
+//    },1000);
+
 </script>
 
