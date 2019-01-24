@@ -39,6 +39,16 @@
         window.onload=function()
         {
             LoadSignLib();
+            var LocationPath;
+            if(window.location.hash)
+            {
+                LocationPath=window.location.hash.substr(1);
+                if(LocationPath.toUpperCase()==="TEST")
+                {
+                    InitTestEnv();
+                }
+            }
+
 
             LoadValues();
             StartWebWallet();
@@ -57,10 +67,9 @@
             {
                 SetDiagramMouseX(event);
             }
-            if(window.location.hash)
+            if(LocationPath)
             {
-                var name=window.location.hash.substr(1);
-                SelectTab(name);
+                SelectTab(LocationPath);
             }
         }
 
@@ -726,20 +735,24 @@
 
         #idStatus
         {
-            z-index:1000;
-            position:relative;
             top:0px;
             left:10px;
             text-align: left;
-            width:800px; /* ширина блока */
+            width:700px;
             height: 20px;
             color:blue;
         }
-
-        td2
+        #idNetwork
         {
-            border: 1px solid #777678;
+            top:0px;
+            right:10px;
+            text-align: right;
+            width:100px;
+            height: 20px;
+            color: #286798;
+            padding-right: 5px;
         }
+
 
 
         .logo
@@ -764,7 +777,8 @@
                 <th><DIV id="MTabExplorer" onclick="SelectTab('TabExplorer')" class="bttab">EXPLORER</DIV></th>
             </tr>
         </table>
-        <DIV id="idStatus">&nbsp;</DIV>
+        <table><tr><td><DIV id="idStatus">&nbsp;</DIV></td><td><DIV id="idNetwork"></DIV></td></tr></table>
+
 
         <DIV id="TabLogo" style="display: block;">
             <DIV align='center' style="width: 800px;">

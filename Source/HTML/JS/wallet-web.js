@@ -14,14 +14,20 @@ MaxTimeConnecting = 3e3, StartTimeConnecting = 0, ConnectedCount = 0, NETWORK = 
         port:80, Name:"LOCAL"}, "terafoundation.org":{ip:"terafoundation.org", port:443, Name:"TERA", System:1}, "91.235.136.81":{ip:"91.235.136.81",
         port:80, Name:"SUPPORT1", System:1}, "149.154.70.158":{ip:"149.154.70.158", port:80, Name:"SUPPORT2", System:1}};
 
+function InitTestEnv()
+{
+    NETWORK = "TERA-TEST", ServerMap = {"127.0.0.1":{ip:"127.0.0.1", port:80, Name:"LOCAL"}, "91.235.136.81":{ip:"91.235.136.81",
+            port:88, Name:"SUPPORT1", System:1}, "149.154.70.158":{ip:"149.154.70.158", port:88, Name:"SUPPORT2", System:1}};
+};
+
 function StartWebWallet()
 {
-    OnInitWebWallet(), ConnectWebWallet();
+    console.log(NETWORK), $("idNetwork").innerHTML = NETWORK, OnInitWebWallet(), ConnectWebWallet();
 };
 
 function OnInitWebWallet()
 {
-    var e = localStorage.getItem("NodesArrayList");
+    var e = localStorage.getItem(NETWORK + "NodesArrayList");
     if(e)
         for(var t = JSON.parse(e), o = 0; o < t.length; o++)
         {
@@ -38,7 +44,7 @@ function SaveServerMap()
         var o = ServerMap[t];
         o.SumPower >= MIN_SUM_POWER && e.push({ip:o.ip, port:o.port});
     }
-    localStorage.setItem("NodesArrayList", JSON.stringify(e));
+    localStorage.setItem(NETWORK + "NodesArrayList", JSON.stringify(e));
 };
 
 function SetStatus(e)
