@@ -298,7 +298,7 @@ function GetDappParams(e,t,n,o)
             {
             }
             if(a)
-                return void n(a);
+                return void n(a, t.MethodName, t.FromNum);
         }
         o && n();
     })) : o && n();

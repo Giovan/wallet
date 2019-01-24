@@ -217,6 +217,6 @@ function DecryptFields(r,t,e)
     for(var n = 0; n < e.length; n++)
     {
         var o = e[n];
-        t[o] && (t[o] = Decrypt(r, t.Crypto, o, GetArrFromHex(t[o])));
+        t[o] ? t[o] = Decrypt(r, t.Crypto, o, GetArrFromHex(t[o])) : t[o] = "";
     }
 };
