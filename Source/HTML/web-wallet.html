@@ -40,6 +40,27 @@
         {
             LoadSignLib();
 
+            if(localStorage["NETWORK"] || window.location.protocol==="file:")
+            {
+                OnLoad();
+            }
+            else
+            {
+                GetData("/GetCurrentInfo",{}, function (Data)
+                {
+                    if(Data && Data.result)
+                    {
+                        localStorage["NETWORK"]=Data.NETWORK;
+                        console.log("Default network: "+Data.NETWORK);
+                        OnLoad();
+
+                    }
+                });
+            }
+        }
+
+        function OnLoad()
+        {
             if(localStorage["NETWORK"])
                 NETWORK=localStorage["NETWORK"];
 

@@ -9,7 +9,7 @@
  * Telegram: https://web.telegram.org/#/im?p=@terafoundation
 */
 
-global.UPDATE_CODE_VERSION_NUM = 875;
+global.UPDATE_CODE_VERSION_NUM = 876;
 global.MIN_CODE_VERSION_NUM = 873;
 global.MINING_VERSION_NUM = 2;
 global.InitParamsArg = InitParamsArg;
