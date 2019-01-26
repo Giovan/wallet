@@ -800,6 +800,8 @@ function Fork(Path,ArrArgs)
         ArrArgs.push("NWMODE");
     if(global.NOALIVE)
         ArrArgs.push("NOALIVE");
+    if(global.DEV_MODE)
+        ArrArgs.push("DEV_MODE");
     glPortDebug++;
     var execArgv = [];
     var Worker = child_process.fork(Path, ArrArgs, {execArgv:execArgv});

@@ -363,7 +363,18 @@
                 if(CONFIG_DATA && CONFIG_DATA.ArrWallet && CONFIG_DATA.ArrWallet.length===0)
                 {
                     WasCheckInstall=1;
-                    SetStatus('<DIV style="background-color: peachpuff;">For install this application goto ACCOUNTS(CONFIG) tab, select your account, press "Set" and enter smart number: <B>'+SMART.Num+'</B><DIV>');
+                    var StrRef;
+                    if(MainServer)
+                        StrRef='<A href="./web-wallet.html#TabAccounts">ACCOUNTS</A>';
+                    else
+                    {
+                        if(localStorage["BIGWALLET"])
+                            StrRef='<A href="/wallet.html#TabAccounts">CONFIG</A>'
+                        else
+                            StrRef='<A href="/web-wallet.html#TabAccounts">ACCOUNTS</A>';
+                    }
+
+                    SetStatus('<DIV style="background-color: peachpuff;">For install this application goto '+StrRef+' tab, select your account, press "Set" and enter smart number: <B>'+SMART.Num+'</B><DIV>');
                 }
 
             },2000);
@@ -426,7 +437,7 @@
     <style>
         iframe
         {
-            position:fixed;
+            position2:fixed;
             left:0;
             top: 20px;
             width: 100%;
@@ -443,6 +454,7 @@
             height:20px;
             padding: 0;
             margin: 0;
+            background-color:white;
         }
 
     </style>
@@ -454,7 +466,7 @@
 <script>
     var glDebugPath="";
 //        glDebugPath="./dapp-smart/forum.html";
-//        glDebugPath="./dapp-smart/DEX.html";
+       // glDebugPath="./dapp-smart/DEX.html";
     //glDebugPath="./dapp-smart/test-load.html";
     //    glDebugPath="./dapp-smart/gambling-1.html";
     //   glDebugPath="./dapp-smart/BTC-coin.html";
@@ -462,8 +474,7 @@
     //  glDebugPath="./dapp-smart/promise.html";
 
     //glDebugPath="./dapp-smart/OnlineStore.html";
-    //{"HTMLBlock":3466246,"HTMLTr":0}
-
+    //{"HTMLBlock":3492141,"HTMLTr":0}
 
 
 </script>

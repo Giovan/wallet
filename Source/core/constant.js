@@ -272,6 +272,9 @@ function InitParamsArg()
                                         case "NOALIVE":
                                             global.NOALIVE = 1;
                                             break;
+                                        case "DEV_MODE":
+                                            global.DEV_MODE = 1;
+                                            break;
                                     }
                                 }
     }

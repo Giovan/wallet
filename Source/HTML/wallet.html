@@ -459,7 +459,6 @@
             StrVersion=StrVersion+"/0."+Data.CODE_VERSION.VersionNum;
         }
 
-        //SetTitle((MaxBlockNum%100)+" "+Name+StrVersion);
         SetTitle(Name+StrVersion);
 
 
@@ -765,6 +764,7 @@
     {
         CurTabName=name;
         OnSelectTab(name);
+        window.location.hash="#"+name;
 
         SetVisibleTab();
         SaveValues();
@@ -870,6 +870,8 @@
         window.onkeydown = CheckCtrlEnterAndESC;
         SetVisibleTab();
 
+        localStorage["BIGWALLET"]=1;
+
         window.OnInitWallet();
     }
     if(!window.OnInitWallet)
@@ -884,6 +886,16 @@
         setInterval(CheckNewMoney,1000);
         setInterval(SaveValues,2000);
         setTimeout(CheckNameAccTo,100);
+
+        if(window.location.hash)
+        {
+            var LocationPath=window.location.hash.substr(1);
+            console.log("LocationPath="+LocationPath)
+            if(LocationPath)
+            {
+                SelectTab(LocationPath);
+            }
+        }
 
         setTimeout(function ()
         {
@@ -1827,3 +1839,7 @@
     <!--progr76@gmail.com-->
 </DIV>
 
+<script>
+//    const buffer = new SharedArrayBuffer(8);
+//    console.log(buffer.byteLength);
+</script>
