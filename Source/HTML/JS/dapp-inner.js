@@ -88,12 +88,12 @@ function DappBlockFile(e,t,a)
 
 function SetStatus(e)
 {
-    SendData({cmd:"SetStatus", Message:e}), console.log(e);
+    SendData({cmd:"SetStatus", Message:e});
 };
 
 function SetError(e)
 {
-    SendData({cmd:"SetError", Message:e}), console.log(e);
+    SendData({cmd:"SetError", Message:e});
 };
 
 function SetLocationPath(e)
@@ -235,11 +235,16 @@ function OnMessage(e)
             }
         }
         else
-            if("OnEvent" === n)
+            switch(n)
             {
-                window.OnEvent && window.OnEvent(t);
-                var r = new CustomEvent("Event", {detail:t});
-                window.dispatchEvent(r);
+                case "History":
+                    var r = new CustomEvent("History", {detail:t});
+                    window.dispatchEvent(r);
+                    break;
+                case "OnEvent":
+                    window.OnEvent && window.OnEvent(t);
+                    r = new CustomEvent("Event", {detail:t});
+                    window.dispatchEvent(r);
             }
     }
 };

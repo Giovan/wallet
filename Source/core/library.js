@@ -442,6 +442,7 @@ function GetCountMiningCPU()
 };
 global.GetCountMiningCPU = GetCountMiningCPU;
 var AddTrMap = {};
+AddTrMap[ - 5] = "Bad block num";
 AddTrMap[ - 4] = "Bad type transaction";
 AddTrMap[ - 3] = "Bad time";
 AddTrMap[ - 2] = "Bad PoW";

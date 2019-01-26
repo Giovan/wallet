@@ -46,7 +46,8 @@ function SaveServerMap()
 
 function SetStatus(e)
 {
-    $("idStatus").innerHTML = e, console.log(e);
+    var t = $("idStatus");
+    t.innerHTML = e, console.log(t.innerText);
 };
 
 function SetError(e,t)

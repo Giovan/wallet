@@ -41,6 +41,7 @@
             win.postMessage(Data, "*");
         }
 
+        var glProgramSetHash;
         function listener(event)
         {
             var Data=event.data;
@@ -199,7 +200,9 @@
                 }
                 case "SetLocationHash":
                 {
+                    glProgramSetHash=1;
                     window.location.hash="#"+Data.Message;
+                    glProgramSetHash=0;
                     break;
                 }
                 case "OpenLink":
@@ -216,11 +219,20 @@
                     });
                     break;
                 }
+//                case "GetLink":
+//                {
+//                    GetData(Data.url,Data.Params, function (SetData)
+//                    {
+//                        if(SetData)
+//                        {
+//                            SendMessage({cmd:"GetLink",Result:SendData});
+//                        }
+//                    });
+//                    break;
+//                }
 
 
             }
-
-            //SetStatus( "Получено: " + JSON.stringify(Data.Message));
         }
 
         if (window.addEventListener)
@@ -289,6 +301,13 @@
                 LoadLib("./JS/sha3.js");
             LoadSignLib();
 
+            window.addEventListener("popstate", function(event)
+            {
+                OPEN_PATH=window.location.hash.substr(1);
+                if(!glProgramSetHash)
+                    SendMessage({cmd:"History",OPEN_PATH:OPEN_PATH});
+
+            }, false);
         }
 
         function CreateFrame(SetData)
@@ -297,6 +316,8 @@
             if(MainServer)
             {
                 var StrPath=GetProtocolServerPath(MainServer);
+                //console.log("StrPath:"+StrPath);
+                //console.log("WAS:\n"+SetData.Body);
 
                 //поддрежка старого кода dapp (после обновления dapp этот код возможно будет удален)
                 SetData.Body=SetData.Body.replace(/\/[0-9a-z_-]+.css\">/g,StrPath+"/CSS$&");
@@ -305,9 +326,10 @@
 
                 //TODO: переделать на нормальный парсинг без регулярки
                 //поддержка перенаправления в блокчейн
-                SetData.Body=SetData.Body.replace(/\/file\/[0-9]+\/[0-9]+\">/g,StrPath+"$&");
+                SetData.Body=SetData.Body.replace(/\/file\/[0-9]+\/[0-9]+\"/g,StrPath+"$&");
                 SriptLW="<script>window.PROTOCOL_SERVER_PATH='"+StrPath+"';<\/script>";
 
+                //console.log("NEW:\n"+SetData.Body);
             }
 
 
@@ -387,7 +409,9 @@
         {
             var id = $("idStatus");
             id.innerHTML=Str;
+            console.log(id.innerText);
         }
+
         function SetError(Str,bNoSound)
         {
             SetStatus("<DIV style='color:red'><B>"+Str+"</B></DIV>");
@@ -438,7 +462,7 @@
     //  glDebugPath="./dapp-smart/promise.html";
 
     //glDebugPath="./dapp-smart/OnlineStore.html";
-    //{"HTMLBlock":17035437,"HTMLTr":0}
+    //{"HTMLBlock":3466246,"HTMLTr":0}
 
 
 

@@ -759,36 +759,39 @@ MapCategory[42] = "Exchanges", MapCategory[43] = "Security", MapCategory[44] = "
 MapCategory[46] = "Insurance";
 var glTrSendNum = 0;
 
-function SendTransaction(o,i,u,l)
+function SendTransaction(i,u,l,c)
 {
-    if(16e3 < o.length)
-        return window.SetStatus && SetStatus("Error length transaction =" + o.length + " (max size=16000)"), void (l && l(1, i, o));
-    glTrSendNum++, window.SetStatus && SetStatus("Prepare to sending..."), function r(e,t)
+    if(16e3 < i.length)
+        return window.SetStatus && SetStatus("Error length transaction =" + i.length + " (max size=16000)"), void (c && c(1, u, i));
+    glTrSendNum++, window.SetStatus && SetStatus("Prepare to sending..."), function r(e,t,n)
     {
-        var n = t;
-        e && (n = CreateHashBodyPOWInnerMinPower(o, u));
-        var a = GetHexFromArr(o);
-        GetData("SendTransactionHex", {Hex:a}, function (e)
+        n || (n = 0);
+        var a = t;
+        e && (a = CreateHashBodyPOWInnerMinPower(i, l));
+        var o = GetHexFromArr(i);
+        if(10 < n)
+            return void SetError("Not sending. Cannt calc pow.");
+        GetData("SendTransactionHex", {Hex:o}, function (e)
         {
             if(e)
             {
-                var t = GetHexFromArr(sha3(o));
+                var t = GetHexFromArr(sha3(i));
                 if(window.SetStatus && SetStatus("Send '" + t.substr(0, 16) + "' result:" + e.text), "Not add" === e.text)
-                    r(1, n + 1);
+                    r(1, a + 1, n + 1);
                 else
                     if("Bad time" === e.text)
                         window.DELTA_FOR_TIME_TX < 6 && (window.DELTA_FOR_TIME_TX++, console.log("New set Delta time: " + window.DELTA_FOR_TIME_TX),
-                        r(1, 0));
+                        r(1, 0, n + 1));
                     else
                     {
-                        var t = GetHexFromArr(sha3(o));
-                        MapSendTransaction[t] = i, l && l(0, i, o);
+                        var t = GetHexFromArr(sha3(i));
+                        MapSendTransaction[t] = u, c && c(0, u, i);
                     }
             }
             else
                 window.SetStatus && SetStatus("Error Data");
         });
-    }(1, 0);
+    }(1, 0, 0);
 };
 window.MapSendTransaction = {};
 var MapSendID = {};

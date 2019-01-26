@@ -162,7 +162,7 @@ module.exports = class CMessages extends require("./transaction-validator")
         if(Res <= 0 && Res !==  - 3)
             return Res;
         if(Tr.num < this.CurrentBlockNum)
-            return 0;
+            return  - 3;
         var delta = Tr.num - this.CurrentBlockNum;
         if(delta > 3)
         {
@@ -184,7 +184,7 @@ module.exports = class CMessages extends require("./transaction-validator")
         }
         var Block = this.GetBlockContext(Tr.num);
         if(!Block)
-            return 0;
+            return  - 5;
         if(Block.Active)
         {
             Res =  - 3
