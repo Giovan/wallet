@@ -21,6 +21,10 @@
         var NumDappGet=0;
         var NumDappInfo=0;
 
+        var arr = new Uint8Array(6);
+        window.crypto.getRandomValues(arr);
+        var glSession=GetHexFromArr(arr);
+
 
         //DAPP TRANSFER
         function SendMessage(Data)
@@ -126,12 +130,12 @@
                     NumDappGet++;
 
                     var Key=localStorage["idPubKey"];
-                    GetData("DappInfo",{Smart:glSmart,Key:Key,NumDappInfo:NumDappInfo,AllData:AllData}, function (SetData)
+                    GetData("DappInfo",{Smart:glSmart,Key:Key,Session:glSession,NumDappInfo:NumDappInfo,AllData:AllData}, function (SetData)
                     {
                         if(SetData)
                         {
                             Data.Err=!SetData.result;
-                            Data.usebufer=SetData.usebufer;
+                            Data.cache=SetData.cache;
                             if(SetData.result)
                             {
                                 CONFIG_DATA=SetData;
@@ -170,7 +174,27 @@
                 case "DappBlockList":
                 case "DappTransactionList":
                 {
-                    GetData(Data.cmd,Data.Params, function (SetData)
+
+                    if(Data.cmd==="DappBlockFile")
+                    {
+                        //check storage
+                        var StrKeyStorage=Data.Params.BlockNum+"-"+Data.Params.TrNum;
+
+                        var Storage=sessionStorage;
+                        var SavedTextData=Storage[StrKeyStorage];
+                        if(SavedTextData)
+                        {
+                            var SetData=JSON.parse(SavedTextData);
+                            Data.Err=!SetData.result;
+                            Data.arr=SetData.arr;
+                            Data.Body=SetData.Body;
+                            SendMessage(Data);
+                            return;
+                        }
+                    }
+
+                    Data.Params.Session=glSession;
+                    GetData(Data.cmd,Data.Params, function (SetData,responseText)
                     {
                         if(SetData)
                         {
@@ -178,6 +202,10 @@
                             Data.arr=SetData.arr;
                             Data.Body=SetData.Body;
                             SendMessage(Data);
+                            if(StrKeyStorage && SetData.result)
+                            {
+                                Storage[StrKeyStorage]=responseText;
+                            }
                         }
                     });
                     break;
@@ -261,7 +289,7 @@
 
 
             var Key=localStorage["idPubKey"];
-            GetData("DappInfo",{Smart:glSmart, Key:Key, AllData:1}, function (SetData)
+            GetData("DappInfo",{Smart:glSmart, Key:Key, Session:glSession, AllData:1}, function (SetData)
             {
                 if(!SetData || !SetData.result)
                     return;

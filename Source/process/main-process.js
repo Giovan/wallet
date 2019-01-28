@@ -164,7 +164,6 @@ function OnMessageStatic(msg)
             }
     }
 };
-global.EventMap = {};
 global.TX_PROCESS = {Name:"TX PROCESS", idInterval:0, idInterval1:0, idInterval2:0, LastAlive:Date.now(), Worker:undefined,
     Path:"./process/tx-process.js", OnMessage:OnMessageTX, PeriodAlive:100 * 1000};
 ArrChildProcess.push(TX_PROCESS);
@@ -179,12 +178,7 @@ function OnMessageTX(msg)
                 {
                     WebProcess.Worker.send(msg);
                 }
-                var Data = msg.Data;
-                var Arr = global.EventMap[Data.Smart];
-                if(Arr && Arr.length < 1000)
-                {
-                    Arr.push(Data);
-                }
+                AddDappEventToGlobalMap(msg.Data);
                 break;
             }
     }

@@ -900,17 +900,24 @@ class AccountApp extends require("./dapp")
             Filter = Filter.trim()
         }
         var F;
-        if(Filter && Filter.substring(0, 1) === "=")
+        if(Filter)
         {
-            Filter = Filter.substring(1)
-            try
+            if(Filter.substring(0, 1) === "=")
             {
-                F = CreateEval(Filter, "Cur,Currency,ID,Operation,Amount,Adviser,Name,PubKey,Smart,BlockNum")
+                Filter = Filter.substring(1)
+                try
+                {
+                    F = CreateEval(Filter, "Cur,Currency,ID,Operation,Amount,Adviser,Name,PubKey,Smart,BlockNum")
+                }
+                catch(e)
+                {
+                    F = undefined
+                    ToLog("" + e)
+                }
             }
-            catch(e)
+            else
             {
-                F = undefined
-                ToLog("" + e)
+                Filter = Filter.toUpperCase()
             }
         }
         var WasError = 0;

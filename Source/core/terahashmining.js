@@ -106,7 +106,6 @@ function CreatePOWVersion3(Block,bHashPump)
     }
     var MaxLider = Block.MaxLider;
     var RunCount = Block.RunCount;
-    var LastNonce = Block.LastNonce;
     var BlockNum = Block.BlockNum;
     var Miner = Block.MinerID;
     var StartNonceRnd = DELTA_NONCE + Block.LastNonce + Math.trunc(3000000000 * Math.random());

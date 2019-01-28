@@ -34,7 +34,6 @@ setInterval(function ()
     process.send({cmd:"Alive"});
 }, 1000);
 process.send({cmd:"online", message:"OK"});
-global.EventMap = {};
 process.on('message', function (msg)
 {
     LastAlive = Date.now();
@@ -80,12 +79,7 @@ process.on('message', function (msg)
             break;
         case "DappEvent":
             {
-                var Data = msg.Data;
-                var LocArr = global.EventMap[Data.Smart];
-                if(LocArr && LocArr.length < 1000)
-                {
-                    LocArr.push(Data);
-                }
+                AddDappEventToGlobalMap(msg.Data);
                 break;
             }
         case "ToLogClient":
@@ -140,6 +134,7 @@ var HostingServer;
 if(global.HTTPS_HOSTING_DOMAIN)
 {
     var file_sert = GetDataPath("sertif.lst");
+    CheckCreateDir(GetDataPath("tmp"));
     var greenlock = require('greenlock').create({version:'draft-12', server:'https://acme-v02.api.letsencrypt.org/directory', configDir:GetDataPath('tmp'),
     });
     var redir = require('redirect-https')();
@@ -151,7 +146,7 @@ if(global.HTTPS_HOSTING_DOMAIN)
         var Delta = certs.expiresAt - Date.now();
         if(Delta > 7 * 86000 * 1000)
         {
-            ToLog("USE old SERT. ExpiresAt: " + new Date(certs.expiresAt));
+            ToLog("USE OLD SERT. ExpiresAt: " + new Date(certs.expiresAt));
             GetNewSert = 0;
             var tlsOptions = {key:certs.privkey, cert:certs.cert + '\r\n' + certs.chain};
             HostingServer = require('https').createServer(tlsOptions, MainHTTPFunction);
@@ -573,7 +568,7 @@ HostingCaller.GetAccountListByKey = function (Params,ppp,bRet)
     var StrInfo = JSON.stringify(Ret);
     if(!Params.AllData && Context.PrevAccountList === StrInfo)
     {
-        return {result:0, usebufer:1};
+        return {result:0, cache:1};
     }
     Context.PrevAccountList = StrInfo;
     Context.NumAccountList++;
@@ -603,31 +598,19 @@ HostingCaller.DappBlockFile = function (Params)
         return {result:0};
     return HTTPCaller.DappBlockFile(Params);
 };
-HostingCaller.LoopEvent = function (Params)
-{
-    if(typeof Params !== "object")
-        return {result:0};
-    process.send({cmd:"SetSmartEvent", Smart:ParseNum(Params.Smart)});
-    var Arr = global.EventMap[ParseNum(Params.Smart)];
-    global.EventMap[ParseNum(Params.Smart)] = [];
-    if(!Arr || Arr.length === 0)
-    {
-        return {result:0, arr:[]};
-    }
-    return {arr:Arr, result:1};
-};
-HTTPCaller.LoopEvent = HostingCaller.LoopEvent;
 HostingCaller.DappInfo = function (Params)
 {
     if(typeof Params !== "object")
         return {result:0};
+    var SmartNum = ParseNum(Params.Smart);
+    process.send({cmd:"SetSmartEvent", Smart:SmartNum});
     var Context = GetUserContext(Params);
     var Ret = HTTPCaller.DappInfo(Params, undefined, 1);
     Ret.PubKey = undefined;
     var StrInfo = JSON.stringify(Ret);
     if(!Params.AllData && Context.PrevDappInfo === StrInfo)
     {
-        return {result:0, usebufer:1};
+        return {result:0, cache:1};
     }
     Context.PrevDappInfo = StrInfo;
     Context.NumDappInfo++;
@@ -708,20 +691,6 @@ HostingCaller.DappStaticCall = function (Params)
     if(typeof Params !== "object")
         return {result:0};
     return HTTPCaller.DappStaticCall(Params);
-};
-var WebWalletUser = {};
-
-function GetUserContext(Params)
-{
-    if(typeof Params.Key !== "string")
-        Params.Key = "" + Params.Key;
-    var Context = WebWalletUser[Params.Key];
-    if(!Context)
-    {
-        Context = {NumDappInfo:0, PrevDappInfo:"", NumAccountList:0, PrevAccountList:"", LastTime:0};
-        WebWalletUser[Params.Key] = Context;
-    }
-    return Context;
 };
 var GlobalRunID = 0;
 var GlobalRunMap = {};

@@ -12,8 +12,8 @@
 var MIN_VERSION = 868, COUNT_BLOCK_PROOF = 300, MIN_SUM_POWER = 35 * COUNT_BLOCK_PROOF, MainServer = void 0, MaxConnectedCount = 10,
 MaxTimeConnecting = 3e3, StartTimeConnecting = 0, ConnectedCount = 0, NETWORK = "TERA-MAIN", ServerMap = {}, ServerMainMap = {"127.0.0.1":{ip:"127.0.0.1",
         port:80, Name:"LOCAL"}, "terafoundation.org":{ip:"terafoundation.org", port:443, Name:"TERA", System:1}, "91.235.136.81":{ip:"91.235.136.81",
-        port:80, Name:"SUPPORT1", System:1}, "149.154.70.158":{ip:"149.154.70.158", port:80, Name:"SUPPORT2", System:1}}, ServerTestMap = {"127.0.0.1":{ip:"127.0.0.1",
-        port:80, Name:"LOCAL"}, "91.235.136.81":{ip:"91.235.136.81", port:88, Name:"SUPPORT1", System:1}, "149.154.70.158":{ip:"149.154.70.158",
+        port:80, Name:"SUPPORT1", System:1}, "dappsgate.com":{ip:"dappsgate.com", port:80, Name:"SUPPORT2", System:1}}, ServerTestMap = {"127.0.0.1":{ip:"127.0.0.1",
+        port:80, Name:"LOCAL"}, "91.235.136.81":{ip:"91.235.136.81", port:88, Name:"SUPPORT1", System:1}, "dappsgate.com":{ip:"dappsgate.com",
         port:88, Name:"SUPPORT2", System:1}};
 
 function StartWebWallet()
@@ -26,10 +26,10 @@ function OnInitWebWallet()
 {
     var e = localStorage.getItem(NETWORK + "NodesArrayList");
     if(e)
-        for(var t = JSON.parse(e), r = 0; r < t.length; r++)
+        for(var t = JSON.parse(e), o = 0; o < t.length; o++)
         {
-            var o = ServerMap[t[r].ip];
-            o && o.System || (ServerMap[t[r].ip] = t[r]);
+            var r = ServerMap[t[o].ip];
+            r && r.System || (ServerMap[t[o].ip] = t[o]);
         }
 };
 
@@ -38,8 +38,8 @@ function SaveServerMap()
     var e = [];
     for(var t in ServerMap)
     {
-        var r = ServerMap[t];
-        r.SumPower >= MIN_SUM_POWER && e.push({ip:r.ip, port:r.port});
+        var o = ServerMap[t];
+        o.SumPower >= MIN_SUM_POWER && e.push({ip:o.ip, port:o.port});
     }
     localStorage.setItem(NETWORK + "NodesArrayList", JSON.stringify(e));
 };
@@ -82,10 +82,10 @@ function DoNodeList(a)
         if(e && e.result && e.BlockChain && e.VersionNum >= MIN_VERSION)
         {
             ConnectedCount++, a.GetHandShake = 1, a.BlockChain = e.BlockChain;
-            for(var t = 0, r = 0; r < e.arr.length; r++)
+            for(var t = 0, o = 0; o < e.arr.length; o++)
             {
-                var o = e.arr[r];
-                !ServerMap[o.ip] && o.port && (ServerMap[o.ip] = o, t = 1);
+                var r = e.arr[o];
+                !ServerMap[r.ip] && r.port && (ServerMap[r.ip] = r, t = 1);
             }
             t && ConnectedCount < MaxConnectedCount && new Date - StartTimeConnecting < MaxTimeConnecting && setTimeout(LoopHandShake,
             100);
@@ -117,12 +117,12 @@ function FindLider()
 {
     MainServer = void 0;
     var e = [], t = {};
-    for(var r in ServerMap)
+    for(var o in ServerMap)
     {
-        if((S = ServerMap[r]).GetWalletInfo && S.BlockChain)
+        if((S = ServerMap[o]).GetWalletInfo && S.BlockChain)
         {
-            var o = S.BlockChain;
-            if(o.data && (o = o.data), S.SumPower = CalcPowFromBlockChain(o), S.SumPower < MIN_SUM_POWER)
+            var r = S.BlockChain;
+            if(r.data && (r = r.data), S.SumPower = CalcPowFromBlockChain(r), S.SumPower < MIN_SUM_POWER)
             {
                 console.log("Skip: " + S.ip + ":" + S.port + " SumPower(" + S.SumPower + ") < MIN_SUM_POWER(" + MIN_SUM_POWER + ")");
                 continue;
@@ -131,8 +131,8 @@ function FindLider()
         }
     }
     var a, n = 0;
-    for(var r in t)
-        t[r] >= n && (n = t[r], a = parseInt(r));
+    for(var o in t)
+        t[o] >= n && (n = t[o], a = parseInt(o));
     e.sort(function (e,t)
     {
         return e.DeltaTime - t.DeltaTime;
@@ -151,9 +151,9 @@ function FindLider()
 
 function CalcPowFromBlockChain(e)
 {
-    var t = 0, r = GetBlockArrFromBuffer(e);
-    if(r.length === COUNT_BLOCK_PROOF)
-        for(var o = 0; o < r.length; o++)
-            t += r[o].Power;
+    var t = 0, o = GetBlockArrFromBuffer(e);
+    if(o.length === COUNT_BLOCK_PROOF)
+        for(var r = 0; r < o.length; r++)
+            t += o[r].Power;
     return t;
 };

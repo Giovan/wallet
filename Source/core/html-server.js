@@ -273,7 +273,11 @@ HTTPCaller.DappStaticCall = function (Params)
 };
 HTTPCaller.DappInfo = function (Params,responce,ObjectOnly)
 {
-    var Account, Smart = DApps.Smart.ReadSimple(ParseNum(Params.Smart));
+    var SmartNum = ParseNum(Params.Smart);
+    if(global.TX_PROCESS && global.TX_PROCESS.Worker)
+        global.TX_PROCESS.Worker.send({cmd:"SetSmartEvent", Smart:SmartNum});
+    var Account;
+    var Smart = DApps.Smart.ReadSimple(SmartNum);
     if(Smart)
     {
         delete Smart.HTML;
@@ -290,8 +294,10 @@ HTTPCaller.DappInfo = function (Params,responce,ObjectOnly)
             Account.SmartState = {};
         }
     }
+    DeleteOldEvents(SmartNum);
+    var Context = GetUserContext(Params);
+    var EArr = GetEventArray(SmartNum, Context);
     var WLData = HTTPCaller.DappWalletList(Params);
-    var EData = HTTPCaller.LoopEvent(Params);
     var ArrLog = [];
     for(var i = 0; i < ArrLogClient.length; i++)
     {
@@ -302,7 +308,7 @@ HTTPCaller.DappInfo = function (Params,responce,ObjectOnly)
     }
     var Ret = {result:1, DELTA_CURRENT_TIME:DELTA_CURRENT_TIME, MIN_POWER_POW_TR:MIN_POWER_POW_TR, FIRST_TIME_BLOCK:FIRST_TIME_BLOCK,
         CONSENSUS_PERIOD_TIME:CONSENSUS_PERIOD_TIME, MIN_POWER_POW_ACC_CREATE:MIN_POWER_POW_ACC_CREATE, PRICE_DAO:PRICE_DAO(SERVER.BlockNumDB),
-        Smart:Smart, Account:Account, ArrWallet:WLData.arr, ArrEvent:EData.arr, ArrLog:ArrLog, };
+        Smart:Smart, Account:Account, ArrWallet:WLData.arr, ArrEvent:EArr, ArrLog:ArrLog, };
     if(global.WALLET)
     {
         Ret.WalletIsOpen = (WALLET.WalletOpen !== false);
@@ -352,19 +358,6 @@ HTTPCaller.DappTransactionList = function (Params)
 {
     var arr = SERVER.GetTrRows(Params.BlockNum, Params.StartNum, Params.CountNum);
     return {arr:arr, result:1};
-};
-HTTPCaller.LoopEvent = function (Params)
-{
-    if(!global.TX_PROCESS || !global.TX_PROCESS.Worker)
-        return {result:0};
-    global.TX_PROCESS.Worker.send({cmd:"SetSmartEvent", Smart:ParseNum(Params.Smart)});
-    var Arr = global.EventMap[ParseNum(Params.Smart)];
-    global.EventMap[ParseNum(Params.Smart)] = [];
-    if(!Arr || Arr.length === 0)
-    {
-        return {result:0};
-    }
-    return {arr:Arr, result:1};
 };
 var sessionid = GetHexFromAddres(crypto.randomBytes(20));
 HTTPCaller.RestartNode = function (Params)
@@ -1483,4 +1476,77 @@ function RunConsole(StrRun)
         ret = e.message + "\n" + e.stack;
     }
     return ret;
+};
+var WebWalletUser = {};
+
+function GetUserContext(Params)
+{
+    if(typeof Params.Key !== "string")
+        Params.Key = "" + Params.Key;
+    var StrKey = Params.Key + "-" + Params.Session;
+    var Context = WebWalletUser[StrKey];
+    if(!Context)
+    {
+        Context = {NumDappInfo:0, PrevDappInfo:"", NumAccountList:0, PrevAccountList:"", LastTime:0, FromEventNum:0};
+        WebWalletUser[StrKey] = Context;
+    }
+    return Context;
+};
+global.GetUserContext = GetUserContext;
+global.EventNum = 0;
+global.EventMap = {};
+
+function AddDappEventToGlobalMap(Data)
+{
+    global.EventNum++;
+    Data.EventNum = global.EventNum;
+    Data.EventDate = Date.now();
+    var Arr = global.EventMap[Data.Smart];
+    if(!Arr)
+    {
+        Arr = [];
+        global.EventMap[Data.Smart] = Arr;
+    }
+    if(Arr.length < 1000)
+    {
+        Arr.push(Data);
+    }
+};
+global.AddDappEventToGlobalMap = AddDappEventToGlobalMap;
+
+function DeleteOldEvents(SmartNum)
+{
+    var CurDate = Date.now();
+    var Arr = global.EventMap[SmartNum];
+    while(Arr && Arr.length)
+    {
+        var Event = Arr[0];
+        if(!Event || CurDate - Event.EventDate < 5000)
+        {
+            break;
+        }
+        Arr.splice(0, 1);
+    }
+};
+
+function GetEventArray(SmartNum,Context)
+{
+    var Arr = global.EventMap[SmartNum];
+    if(!Arr || Arr.length === 0)
+    {
+        return [];
+    }
+    var FromEventNum = Context.FromEventNum;
+    var ArrRet = [];
+    for(var i = 0; i < Arr.length; i++)
+    {
+        var Event = Arr[i];
+        if(Event.EventNum >= FromEventNum)
+            ArrRet.push(Event);
+    }
+    if(ArrRet.length)
+    {
+        Context.FromEventNum = ArrRet[ArrRet.length - 1].EventNum + 1;
+    }
+    return ArrRet;
 };
