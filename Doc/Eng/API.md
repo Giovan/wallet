@@ -102,9 +102,11 @@ Note: The transaction in hex format can be obtained if you use a functions from 
     <script type="text/javascript" src="./JS/sign-lib-min.js"></script>
 
     <script>
+
         //Init
         window.onload=function ()
         {
+            window.DELTA_FOR_TIME_TX=4;
             window.MainServer={ip:"dappsgate.com",port:80};
 
             //run every 1 sec for getting current block number and network time
@@ -118,17 +120,21 @@ Note: The transaction in hex format can be obtained if you use a functions from 
             },1000);
         }
 
+
         //Use API
-
-
         function SignTr()
         {
             var PrivKey=$("idPrivKey").value;
             var TR=JSON.parse($("idTr").value);
 
-            var Body=GetArrFromTR(TR);
-            TR.Sign=GetSignFromArr(Body,PrivKey);
-            $("idTr").value=JSON.stringify(TR,"",4);
+
+
+
+            GetSignTransaction(TR,PrivKey,function ()
+            {
+                TR.Sign=GetHexFromArr(TR.Sign);
+                $("idTr").value=JSON.stringify(TR,"",4);
+            });
         }
 
         function GetHexFromTr()

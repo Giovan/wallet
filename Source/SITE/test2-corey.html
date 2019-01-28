@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test2-API </title>
+
+
+    <script type="text/javascript" src="./JS/client.js"></script>
+    <script type="text/javascript" src="./JS/sha3.js"></script>
+    <script type="text/javascript" src="./JS/crypto-client.js"></script>
+    <script type="text/javascript" src="./JS/terahashlib.js"></script>
+    <script type="text/javascript" src="./JS/wallet-lib.js"></script>
+    <script type="text/javascript" src="./JS/sign-lib-min.js"></script>
+
+    <script>
+
+        //Init
+        window.onload=function ()
+        {
+            window.MainServer={ip:"124.133.96.85",port:1812};
+
+            //run every 1 sec for getting current block number and network time
+            setInterval(function ()
+            {
+                GetData("GetCurrentInfo",{}, function (Data)
+                {
+                    if(Data && Data.result)
+                        SetBlockChainConstant(Data);
+                });
+            },1000);
+        }
+
+
+
+        function SignTr()
+        {
+            var PrivKey=$("idPrivKey").value;
+            var TR=JSON.parse($("idTr").value);
+
+            var Body=GetArrFromTR(TR);
+            TR.Sign=GetSignFromArr(Body,PrivKey);
+            $("idTr").value=JSON.stringify(TR,"",4);
+        }
+
+        function GetHexFromTr()
+        {
+            var TR=JSON.parse($("idTr").value);
+            var Body=GetArrFromTR(TR);
+            if(!TR.Sign)
+            {
+                $("idOut").value="Error: sign tx";
+                return "";
+            }
+
+            var Arr=GetArrFromHex(TR.Sign);
+            WriteArr(Body,Arr,64);
+            Body.length+=12;
+            CreateHashBodyPOWInnerMinPower(Body);
+            var StrHex=GetHexFromArr(Body);
+
+            $("idOut").value=StrHex;
+            return StrHex;
+        }
+
+       function SendTr()
+        {
+            var StrHex=GetHexFromTr();
+            if(!StrHex)
+                return;
+
+            GetData("SendTransactionHex",{Hex:StrHex}, function (Data)
+            {
+			 if(Data.text==="Bad time")
+                {
+                    if(window.DELTA_FOR_TIME_TX<6)
+                    {
+                        window.DELTA_FOR_TIME_TX++;
+						SendTr();
+                        console.log("New set Delta time: "+window.DELTA_FOR_TIME_TX);
+                    }
+                }
+                if(Data && Data.result)
+                {
+                    $("idOut").value=Data.text;
+                }
+                else
+                {
+                    if(Data)
+                        $("idOut").value="Error: "+Data.text;
+                    else
+                        $("idOut").value="Error";
+                }
+
+            });
+        }
+
+    </script>
+</head>
+<body>
+
+<B>Priv key:</B>
+<INPUT type="search" id="idPrivKey" value="E28EAABA96C1FF2596048ED9995CF40B72B9916387E6A55BBEEDED6B6E76FA14" style="width: 600px"><BR>
+<B>Tx</B> (after each transaction is sent, the OperationID number is increased by 1):<BR>
+<textarea id="idTr" rows="20" cols="98">
+{
+    "Type": 111,
+    "Version": 3,
+    "Reserve": 0,
+    "FromID": 8143,
+    "OperationID": 1,
+    "To": [
+        {
+            "PubKey": "",
+            "ID": 188930,
+            "SumCOIN": 10,
+            "SumCENT": 0
+        }
+    ],
+    "Description": "Test",
+    "Body": "",
+    "Sign": ""
+}
+</textarea><BR>
+<B>Actions:</B><BR>
+<button onclick="SignTr()">Sign Tx</button>
+<button onclick="GetHexFromTr()">Get Hex</button>
+<button onclick="SendTr()">Send tx</button>
+
+<BR><B>Result:</B><BR>
+<textarea id="idOut" rows="20" cols="98"></textarea>
+</body>
+</html>

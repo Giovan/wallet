@@ -121,8 +121,7 @@ function CreateTransaction(t,e,n)
                 Description:u, Body:v, Sign:CurrentTR.Sign};
             Object.defineProperties(f, {bFindAcc:{configurable:!0, writable:!0, enumerable:!1, value:i}}), Object.defineProperties(f, {Run:{configurable:!0,
                     writable:!0, enumerable:!1, value:n}}), JSON.stringify(f) !== JSON.stringify(CurrentTR) ? (CurrentTR = f, GetSignTransaction(f,
-            
-function (e)
+            "", function (e)
             {
                 CurTransactionToForm(!0), t && t(e);
             })) : t && t(CurrentTR);
@@ -135,7 +134,7 @@ function SignJSON(t)
     if(!$("idSignJSON").disabled)
     {
         var e = GetTransactionFromJSON();
-        e && (CurrentTR = e, GetSignTransaction(e, function (e)
+        e && (CurrentTR = e, GetSignTransaction(e, "", function (e)
         {
             CurTransactionToForm(!0), t && t();
         }));

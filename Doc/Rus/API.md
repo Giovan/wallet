@@ -100,9 +100,11 @@ http://194.1.237.94:80/SendTransactionHex?Hex=6F030000000000002D0000000000010000
     <script type="text/javascript" src="./JS/sign-lib-min.js"></script>
 
     <script>
+
         //Init
         window.onload=function ()
         {
+            window.DELTA_FOR_TIME_TX=4;
             window.MainServer={ip:"dappsgate.com",port:80};
 
             //run every 1 sec for getting current block number and network time
@@ -116,16 +118,21 @@ http://194.1.237.94:80/SendTransactionHex?Hex=6F030000000000002D0000000000010000
             },1000);
         }
 
-        //Use API
 
+        //Use API
         function SignTr()
         {
             var PrivKey=$("idPrivKey").value;
             var TR=JSON.parse($("idTr").value);
 
-            var Body=GetArrFromTR(TR);
-            TR.Sign=GetSignFromArr(Body,PrivKey);
-            $("idTr").value=JSON.stringify(TR,"",4);
+
+
+
+            GetSignTransaction(TR,PrivKey,function ()
+            {
+                TR.Sign=GetHexFromArr(TR.Sign);
+                $("idTr").value=JSON.stringify(TR,"",4);
+            });
         }
 
         function GetHexFromTr()
@@ -207,5 +214,4 @@ http://194.1.237.94:80/SendTransactionHex?Hex=6F030000000000002D0000000000010000
 <textarea id="idOut" rows="20" cols="98"></textarea>
 </body>
 </html>
-
 ```

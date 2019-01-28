@@ -855,37 +855,37 @@ function GetArrFromTR(e)
     0), WriteByte(t, 0))), t;
 };
 
-function GetSignTransaction(a,o)
+function GetSignTransaction(a,o,i)
 {
     if(window.SignLib)
         if(3 === a.Version)
-            for(var i = [], u = 0, e = 0; e < a.To.length; e++)
+            for(var u = [], l = 0, e = 0; e < a.To.length; e++)
             {
                 var t = a.To[e];
                 GetData("GetAccountList", {StartNum:t.ID}, function (e)
                 {
                     if(e && 1 === e.result && e.arr.length)
                     {
-                        u++;
+                        l++;
                         for(var t = e.arr[0].PubKey.data, r = 0; r < 33; r++)
-                            i[i.length] = t[r];
-                        if(u === a.To.length)
+                            u[u.length] = t[r];
+                        if(l === a.To.length)
                         {
                             var n = GetArrFromTR(a);
                             for(r = 0; r < n.length; r++)
-                                i[i.length] = n[r];
-                            a.Sign = GetArrFromHex(GetSignFromArr(i)), o(a);
+                                u[u.length] = n[r];
+                            a.Sign = GetArrFromHex(GetSignFromArr(u, o)), i(a);
                         }
                     }
                 });
             }
         else
             a.Sign = "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-            o(a);
+            i(a);
     else
         GetData("GetSignTransaction", a, function (e)
         {
-            e && 1 === e.result && (a.Sign = GetArrFromHex(e.Sign), o(a));
+            e && 1 === e.result && (a.Sign = GetArrFromHex(e.Sign), i(a));
         });
 };
 
