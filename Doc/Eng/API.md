@@ -84,8 +84,8 @@ Result:
 
 Note: The transaction in hex format can be obtained if you use a functions from the js-library
 * The library is located at: https://github.com/terafoundation/wallet/raw/master/Bin/Light/Tera-light.zip
+* Example: http://dappsgate.com/test-api.html
 
-Example:
 ```html
 <!DOCTYPE html>
 <html lang="en">

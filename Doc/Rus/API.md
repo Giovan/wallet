@@ -82,7 +82,8 @@ http://194.1.237.94:80/SendTransactionHex?Hex=6F030000000000002D0000000000010000
 ```
 Комментарий: транзакцию в формате hex можно получить если использовать функции из библиотек на языке javascript
 * Библиотеки находятся по адресу: https://github.com/terafoundation/wallet/raw/master/Bin/Light/Tera-light.zip
-Пример:
+* Пример: http://dappsgate.com/test-api.html
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
