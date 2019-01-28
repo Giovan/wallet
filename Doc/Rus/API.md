@@ -88,7 +88,7 @@ http://194.1.237.94:80/SendTransactionHex?Hex=6F030000000000002D0000000000010000
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Test-API</title>
+    <title>Test2-API </title>
 
 
     <script type="text/javascript" src="./JS/client.js"></script>
@@ -99,52 +99,109 @@ http://194.1.237.94:80/SendTransactionHex?Hex=6F030000000000002D0000000000010000
     <script type="text/javascript" src="./JS/sign-lib-min.js"></script>
 
     <script>
-        var PrivKey="1E8E49FF0D3F04FD5E983C8A1BAF9A23A23FA26C099430C9C37BCEBC83286CC9";
-        function GetHex()
+        window.onload=function ()
         {
-            var TR=
+            window.MainServer={ip:"dappsgate.com",port:80};
+
+
+            setInterval(function ()
+            {
+                GetData("GetCurrentInfo",{}, function (Data)
                 {
-                    "Type": 111,
-                    "Version": 3,
-                    "Reserve": 0,
-                    "FromID": 188386,
-                    "OperationID": 8,
-                    "To": [
-                        {
-                            "PubKey": "",
-                            "ID": 188391,
-                            "SumCOIN": 1,
-                            "SumCENT": 0
-                        }
-                    ],
-                    "Description": "=123=",
-                    "Body": "",
-                    "Sign": ""
-                }
+                    if(Data && Data.result)
+                        SetBlockChainConstant(Data);
+                });
+            },1000);
+        }
 
-            //you must get data from node:
-            window.DELTA_CURRENT_TIME2=0;//???
-            window.MIN_POWER_POW_TR=10;
-            window.MIN_POWER_POW_ACC_CREATE=16+3;
 
+
+        function SignTr()
+        {
+            var PrivKey=$("idPrivKey").value;
+            var TR=JSON.parse($("idTr").value);
 
             var Body=GetArrFromTR(TR);
-            var Sign=GetSignFromArr(Body,PrivKey);
-            var Arr=GetArrFromHex(Sign);
+            TR.Sign=GetSignFromArr(Body,PrivKey);
+            $("idTr").value=JSON.stringify(TR,"",4);
+        }
+
+        function GetHexFromTr()
+        {
+            var TR=JSON.parse($("idTr").value);
+            var Body=GetArrFromTR(TR);
+            if(!TR.Sign)
+            {
+                $("idOut").value="Error: sign tx";
+                return "";
+            }
+
+            var Arr=GetArrFromHex(TR.Sign);
             WriteArr(Body,Arr,64);
             Body.length+=12;
             CreateHashBodyPOWInnerMinPower(Body);
             var StrHex=GetHexFromArr(Body);
 
             $("idOut").value=StrHex;
-            console.log(StrHex);
+            return StrHex;
+        }
+
+        function SendTr()
+        {
+            var StrHex=GetHexFromTr();
+            if(!StrHex)
+                return;
+
+            GetData("SendTransactionHex",{Hex:StrHex}, function (Data)
+            {
+                if(Data && Data.result)
+                {
+                    $("idOut").value=Data.text;
+                }
+                else
+                {
+                    if(Data)
+                        $("idOut").value="Error: "+Data.text;
+                    else
+                        $("idOut").value="Error";
+                }
+
+            });
         }
 
     </script>
 </head>
 <body>
 
-<button onclick="GetHex()">GetHex</button><BR>
+<B>Priv key:</B>
+<INPUT type="search" id="idPrivKey" value="7AF1726733E39D95DD7E9DAD1F6F2B76D0477B3B604439B1353B97BC24A72844" style="width: 600px"><BR>
+<B>Tx</B> (after each transaction is sent, the OperationID number is increased by 1):<BR>
+<textarea id="idTr" rows="20" cols="98">
+{
+    "Type": 111,
+    "Version": 3,
+    "Reserve": 0,
+    "FromID": 189115,
+    "OperationID": 2,
+    "To": [
+        {
+            "PubKey": "",
+            "ID": 9,
+            "SumCOIN": 0,
+            "SumCENT": 1
+        }
+    ],
+    "Description": "Test",
+    "Body": "",
+    "Sign": ""
+}
+</textarea><BR>
+<B>Actions:</B><BR>
+<button onclick="SignTr()">Sign Tx</button>
+<button onclick="GetHexFromTr()">Get Hex</button>
+<button onclick="SendTr()">Send tx</button>
+
+<BR><B>Result:</B><BR>
 <textarea id="idOut" rows="20" cols="98"></textarea>
 </body>
 </html>
