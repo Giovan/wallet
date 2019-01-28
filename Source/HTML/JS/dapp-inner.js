@@ -10,110 +10,110 @@
 */
 
 
-function SendPay(e)
+function SendPay(t)
 {
-    e.cmd = "pay", SendData(e);
+    t.cmd = "pay", SendData(t);
 };
 
-function SetStorage(e,t)
+function SetStorage(t,e)
 {
-    SendData({cmd:"setstorage", Key:e, Value:t});
+    SendData({cmd:"setstorage", Key:t, Value:e});
 };
 
-function GetStorage(e,t)
+function GetStorage(t,e)
 {
-    SendData({cmd:"getstorage", Key:e}, t);
+    SendData({cmd:"getstorage", Key:t}, e);
 };
 
-function SetCommon(e,t)
+function SetCommon(t,e)
 {
-    SendData({cmd:"setcommon", Key:e, Value:t});
+    SendData({cmd:"setcommon", Key:t, Value:e});
 };
 
-function GetCommon(e,t)
+function GetCommon(t,e)
 {
-    SendData({cmd:"getcommon", Key:e}, t);
+    SendData({cmd:"getcommon", Key:t}, e);
 };
 
-function GetInfo(e)
+function GetInfo(t)
 {
-    SendData({cmd:"DappInfo"}, e);
+    SendData({cmd:"DappInfo", AllAccounts:ALL_ACCOUNTS}, t);
 };
 
-function Call(e,t,a,n)
+function Call(t,e,a,n)
 {
-    SendData({cmd:"DappCall", MethodName:t, Params:a, Account:e}, n);
+    SendData({cmd:"DappCall", MethodName:e, Params:a, Account:t}, n);
 };
 
-function SendCall(e,t,a,n)
+function SendCall(t,e,a,n)
 {
-    return INFO.WalletCanSign ? (SendData({cmd:"DappSendCall", MethodName:t, Params:a, Account:e, FromNum:n}), 1) : (SetError("Pls, open wallet"),
+    return INFO.WalletCanSign ? (SendData({cmd:"DappSendCall", MethodName:e, Params:a, Account:t, FromNum:n}), 1) : (SetError("Pls, open wallet"),
     0);
 };
 
-function GetWalletAccounts(e)
+function GetWalletAccounts(t)
 {
-    SendData({cmd:"DappWalletList"}, e);
+    SendData({cmd:"DappWalletList"}, t);
 };
 
-function GetAccountList(e,t)
+function GetAccountList(t,e)
 {
-    SendData({cmd:"DappAccountList", Params:e}, t);
+    SendData({cmd:"DappAccountList", Params:t}, e);
 };
 
-function GetSmartList(e,t)
+function GetSmartList(t,e)
 {
-    SendData({cmd:"DappSmartList", Params:e}, t);
+    SendData({cmd:"DappSmartList", Params:t}, e);
 };
 
-function GetBlockList(e,t)
+function GetBlockList(t,e)
 {
-    SendData({cmd:"DappBlockList", Params:e}, t);
+    SendData({cmd:"DappBlockList", Params:t}, e);
 };
 
-function GetTransactionList(e,t)
+function GetTransactionList(t,e)
 {
-    SendData({cmd:"DappTransactionList", Params:e}, t);
+    SendData({cmd:"DappTransactionList", Params:t}, e);
 };
 
-function DappSmartHTMLFile(e,t)
+function DappSmartHTMLFile(t,e)
 {
-    SendData({cmd:"DappSmartHTMLFile", Params:{Smart:e}}, t);
+    SendData({cmd:"DappSmartHTMLFile", Params:{Smart:t}}, e);
 };
 
-function DappBlockFile(e,t,a)
+function DappBlockFile(t,e,a)
 {
-    SendData({cmd:"DappBlockFile", Params:{BlockNum:e, TrNum:t}}, a);
+    SendData({cmd:"DappBlockFile", Params:{BlockNum:t, TrNum:e}}, a);
 };
 
-function SetStatus(e)
+function SetStatus(t)
 {
-    SendData({cmd:"SetStatus", Message:e});
+    SendData({cmd:"SetStatus", Message:t});
 };
 
-function SetError(e)
+function SetError(t)
 {
-    SendData({cmd:"SetError", Message:e});
+    SendData({cmd:"SetError", Message:t});
 };
 
-function SetLocationPath(e)
+function SetLocationPath(t)
 {
-    SendData({cmd:"SetLocationHash", Message:e});
+    SendData({cmd:"SetLocationHash", Message:t});
 };
 
-function OpenLink(e)
+function OpenLink(t)
 {
-    SendData({cmd:"OpenLink", Message:e});
+    SendData({cmd:"OpenLink", Message:t});
 };
 
-function ComputeSecret(e,a)
+function ComputeSecret(t,a)
 {
     if(!INFO.WalletCanSign)
         return SetError("Pls, open wallet"), 0;
-    "number" == typeof e ? GetAccountList({StartNum:e, CountNum:1}, function (e,t)
+    "number" == typeof t ? GetAccountList({StartNum:t, CountNum:1}, function (t,e)
     {
-        e ? SetError(e) : SendData({cmd:"ComputeSecret", PubKey:t[0].PubKey.data}, a);
-    }) : SendData({cmd:"ComputeSecret", PubKey:e}, a);
+        t ? SetError(t) : SendData({cmd:"ComputeSecret", PubKey:e[0].PubKey.data}, a);
+    }) : SendData({cmd:"ComputeSecret", PubKey:t}, a);
 };
 
 function CheckInstall()
@@ -121,33 +121,33 @@ function CheckInstall()
     SendData({cmd:"CheckInstall"});
 };
 
-function SendTransaction(e,t,a,n)
+function SendTransaction(t,e,a,n)
 {
-    SetError("Cannt SEND TR: " + JSON.stringify(t));
+    SetError("Cannt SEND TR: " + JSON.stringify(e));
 };
 
-function CurrencyName(e)
+function CurrencyName(t)
 {
-    var n = MapCurrency[e];
-    return n || (GetSmartList({StartNum:e, CountNum:1, TokenGenerate:1}, function (e,t)
+    var n = MapCurrency[t];
+    return n || (GetSmartList({StartNum:t, CountNum:1, TokenGenerate:1}, function (t,e)
     {
-        if(!e && 0 !== t.length)
+        if(!t && 0 !== e.length)
         {
-            var a = t[0];
+            var a = e[0];
             n = GetTokenName(a.Num, a.ShortName), MapCurrency[a.Num] = n;
         }
-    }), n = GetTokenName(e, "")), n;
+    }), n = GetTokenName(t, "")), n;
 };
 var SendCountUpdate = 0;
 
 function FindAllCurrency()
 {
-    SendCountUpdate++, GetSmartList({StartNum:8, CountNum:100, TokenGenerate:1}, function (e,t)
+    SendCountUpdate++, GetSmartList({StartNum:8, CountNum:100, TokenGenerate:1}, function (t,e)
     {
-        if(SendCountUpdate--, !e)
-            for(var a = 0; a < t.length; a++)
+        if(SendCountUpdate--, !t)
+            for(var a = 0; a < e.length; a++)
             {
-                var n = t[a];
+                var n = e[a];
                 if(!MapCurrency[n.Num])
                 {
                     var o = GetTokenName(n.Num, n.ShortName);
@@ -157,27 +157,27 @@ function FindAllCurrency()
     });
 };
 
-function GetFilePath(e)
+function GetFilePath(t)
 {
-    return window.PROTOCOL_SERVER_PATH && e.indexOf("file/") && ("/" !== e.substr(0, 1) && (e = "/" + e), e = window.PROTOCOL_SERVER_PATH + e),
-    e;
+    return window.PROTOCOL_SERVER_PATH && t.indexOf("file/") && ("/" !== t.substr(0, 1) && (t = "/" + t), t = window.PROTOCOL_SERVER_PATH + t),
+    t;
 };
 
-function GetParamsFromPath(e)
+function GetParamsFromPath(t)
 {
     if(OPEN_PATH)
-        for(var t = OPEN_PATH.split("&"), a = 0; a < t.length; a++)
-            if(0 === t[a].indexOf(e + "="))
-                return t[a].split("=")[1];
+        for(var e = OPEN_PATH.split("&"), a = 0; a < e.length; a++)
+            if(0 === e[a].indexOf(t + "="))
+                return e[a].split("=")[1];
 };
 
-function GetState(e,n,o)
+function GetState(t,n,o)
 {
-    SendCountUpdate++, GetAccountList({StartNum:e, CountNum:1}, function (e,t)
+    SendCountUpdate++, GetAccountList({StartNum:t, CountNum:1}, function (t,e)
     {
-        if(SendCountUpdate--, !e && t.length)
+        if(SendCountUpdate--, !t && e.length)
         {
-            var a = t[0].SmartState;
+            var a = e[0].SmartState;
             if(a)
                 return void n(a);
         }
@@ -186,47 +186,47 @@ function GetState(e,n,o)
 };
 var glMapF = {}, glKeyF = 0;
 
-function SendData(e,t)
+function SendData(t,e)
 {
-    window.parent && (t && (glKeyF++, e.CallID = glKeyF, glMapF[glKeyF] = t), window.parent.postMessage(e, "*"));
+    window.parent && (e && (glKeyF++, t.CallID = glKeyF, glMapF[glKeyF] = e), window.parent.postMessage(t, "*"));
 };
 
-function OnMessage(e)
+function OnMessage(t)
 {
-    var t = e.data;
-    if(t && "object" == typeof t)
+    var e = t.data;
+    if(e && "object" == typeof e)
     {
-        var a = t.CallID, n = t.cmd;
+        var a = e.CallID, n = e.cmd;
         if(a)
         {
             var o = glMapF[a];
             if(o)
             {
-                switch(delete t.CallID, delete t.cmd, n)
+                switch(delete e.CallID, delete e.cmd, n)
                 {
                     case "getstorage":
                     case "getcommon":
-                        o(t.Key, t.Value);
+                        o(e.Key, e.Value);
                         break;
                     case "DappCall":
-                        o(t.Err, t.RetValue);
+                        o(e.Err, e.RetValue);
                         break;
                     case "DappInfo":
-                        o(t.Err, t);
+                        o(e.Err, e);
                         break;
                     case "DappWalletList":
                     case "DappAccountList":
                     case "DappSmartList":
                     case "DappBlockList":
                     case "DappTransactionList":
-                        o(t.Err, t.arr);
+                        o(e.Err, e.arr);
                         break;
                     case "DappBlockFile":
                     case "DappSmartHTMLFile":
-                        o(t.Err, t.Body);
+                        o(e.Err, e.Body);
                         break;
                     case "ComputeSecret":
-                        o(t.Result);
+                        o(e.Result);
                         break;
                     default:
                         console.log("Error cmd: " + n);
@@ -238,41 +238,41 @@ function OnMessage(e)
             switch(n)
             {
                 case "History":
-                    var r = new CustomEvent("History", {detail:t});
+                    var r = new CustomEvent("History", {detail:e});
                     window.dispatchEvent(r);
                     break;
                 case "OnEvent":
-                    window.OnEvent && window.OnEvent(t);
-                    r = new CustomEvent("Event", {detail:t});
+                    window.OnEvent && window.OnEvent(e);
+                    r = new CustomEvent("Event", {detail:e});
                     window.dispatchEvent(r);
             }
     }
 };
 
-function OpenRefFile(e)
+function OpenRefFile(t)
 {
-    var t = ParseFileName(e);
-    t.BlockNum ? DappBlockFile(t.BlockNum, t.TrNum, function (e,t)
+    var e = ParseFileName(t);
+    e.BlockNum ? DappBlockFile(e.BlockNum, e.TrNum, function (t,e)
     {
-        document.write(t);
-    }) : OpenLink(e);
+        document.write(e);
+    }) : OpenLink(t);
 };
 
-function SaveToStorageByArr(e)
+function SaveToStorageByArr(t)
 {
     SetStorage("VerSave", "1");
-    for(var t = 0; t < e.length; t++)
+    for(var e = 0; e < t.length; e++)
     {
-        var a = e[t], n = $(a);
+        var a = t[e], n = $(a);
         "checkbox" === n.type ? SetStorage(a, 0 + n.checked) : SetStorage(a, n.value);
     }
 };
 
 function LoadFromStorageByArr(n,o,r)
 {
-    GetStorage("VerSave", function (e,t)
+    GetStorage("VerSave", function (t,e)
     {
-        if("1" === t)
+        if("1" === e)
             for(var a = 0; a < n.length; a++)
                 a === n.length - 1 ? LoadFromStorageById(n[a], o) : LoadFromStorageById(n[a]);
         r && o && o(0);
@@ -281,52 +281,52 @@ function LoadFromStorageByArr(n,o,r)
 
 function LoadFromStorageById(n,o)
 {
-    GetStorage(n, function (e,t)
+    GetStorage(n, function (t,e)
     {
         var a = document.getElementById(n);
-        "checkbox" === a.type ? a.checked = parseInt(t) : a.value = t, o && o(e, t);
+        "checkbox" === a.type ? a.checked = parseInt(e) : a.value = e, o && o(t, e);
     });
 };
 var SendCountDappParams = 0;
 
-function GetDappParams(e,t,n,o)
+function GetDappParams(t,e,n,o)
 {
-    e ? (SendCountDappParams++, DappBlockFile(e, t, function (e,t)
+    t ? (SendCountDappParams++, DappBlockFile(t, e, function (t,e)
     {
-        if(SendCountDappParams--, !e && 135 === t.Type)
+        if(SendCountDappParams--, !t && 135 === e.Type)
         {
             try
             {
-                var a = JSON.parse(t.Params);
+                var a = JSON.parse(e.Params);
             }
-            catch(e)
+            catch(t)
             {
             }
             if(a)
-                return void n(a, t.MethodName, t.FromNum);
+                return void n(a, e.MethodName, e.FromNum);
         }
         o && n();
     })) : o && n();
 };
 document.addEventListener("DOMContentLoaded", function ()
 {
-    for(var e = document.getElementsByTagName("A"), t = 0, a = e.length; t < a; t++)
-        0 <= e[t].href.indexOf("/file/") && (e[t].onclick = function ()
+    for(var t = document.getElementsByTagName("A"), e = 0, a = t.length; e < a; e++)
+        0 <= t[e].href.indexOf("/file/") && (t[e].onclick = function ()
         {
             OpenRefFile(this.href);
         });
 }), window.addEventListener ? window.addEventListener("message", OnMessage) : window.attachEvent("onmessage", OnMessage);
 var SMART = {}, BASE_ACCOUNT = {}, INFO = {}, USER_ACCOUNT = [], USER_ACCOUNT_MAP = {}, OPEN_PATH = "", ACCOUNT_OPEN_NUM = 0,
-WasStartInit = 0, WasStartInit2 = 0, eventInfo = new Event("UpdateInfo");
+ALL_ACCOUNTS = 0, WasStartInit = 0, WasStartInit2 = 0, eventInfo = new Event("UpdateInfo");
 
 function UpdateDappInfo()
 {
-    GetInfo(function (e,t)
+    GetInfo(function (t,e)
     {
-        if(!e)
+        if(!t)
         {
-            SMART = (INFO = t).Smart, BASE_ACCOUNT = t.Account, OPEN_PATH = t.OPEN_PATH, ACCOUNT_OPEN_NUM = ParseNum(OPEN_PATH), SetBlockChainConstant(t),
-            USER_ACCOUNT = t.ArrWallet, USER_ACCOUNT_MAP = {};
+            SMART = (INFO = e).Smart, BASE_ACCOUNT = e.Account, OPEN_PATH = e.OPEN_PATH, ACCOUNT_OPEN_NUM = ParseNum(OPEN_PATH), SetBlockChainConstant(e),
+            USER_ACCOUNT = e.ArrWallet, USER_ACCOUNT_MAP = {};
             for(var a = 0; a < USER_ACCOUNT.length; a++)
                 USER_ACCOUNT_MAP[USER_ACCOUNT[a].Num] = USER_ACCOUNT[a];
             if(window.OnInit && !WasStartInit ? (WasStartInit = 1, window.OnInit(1)) : window.OnUpdateInfo && window.OnUpdateInfo(), !WasStartInit2)
@@ -335,10 +335,10 @@ function UpdateDappInfo()
                 var n = new Event("Init");
                 window.dispatchEvent(n);
             }
-            if(window.dispatchEvent(eventInfo), t.ArrEvent)
-                for(a = 0; a < t.ArrEvent.length; a++)
+            if(window.dispatchEvent(eventInfo), e.ArrEvent)
+                for(a = 0; a < e.ArrEvent.length; a++)
                 {
-                    var o = t.ArrEvent[a];
+                    var o = e.ArrEvent[a];
                     o.cmd = "OnEvent", OnMessage({data:o});
                 }
         }

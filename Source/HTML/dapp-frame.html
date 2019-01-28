@@ -130,7 +130,7 @@
                     NumDappGet++;
 
                     var Key=localStorage["idPubKey"];
-                    GetData("DappInfo",{Smart:glSmart,Key:Key,Session:glSession,NumDappInfo:NumDappInfo,AllData:AllData}, function (SetData)
+                    GetData("DappInfo",{Smart:glSmart,Key:Key,Session:glSession,NumDappInfo:NumDappInfo,AllData:AllData,AllAccounts:Data.AllAccounts}, function (SetData)
                     {
                         if(SetData)
                         {
@@ -502,6 +502,7 @@
     //  glDebugPath="./dapp-smart/promise.html";
 
     //glDebugPath="./dapp-smart/OnlineStore.html";
+    //glDebugPath="./dapp-smart/Clicker.html";
     //{"HTMLBlock":3492141,"HTMLTr":0}
 
 

@@ -632,7 +632,7 @@ HostingCaller.DappWalletList = function (Params)
     var arr = [];
     for(var i = 0; i < Ret.arr.length; i++)
     {
-        if(Ret.arr[i].Value.Smart === Smart)
+        if(Ret.arr[i].Value.Smart === Smart || Params.AllAccounts)
         {
             arr.push(Ret.arr[i]);
         }
