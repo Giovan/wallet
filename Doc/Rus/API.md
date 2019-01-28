@@ -100,11 +100,12 @@ http://194.1.237.94:80/SendTransactionHex?Hex=6F030000000000002D0000000000010000
     <script type="text/javascript" src="./JS/sign-lib-min.js"></script>
 
     <script>
+        //Init
         window.onload=function ()
         {
             window.MainServer={ip:"dappsgate.com",port:80};
 
-
+            //run every 1 sec for getting current block number and network time
             setInterval(function ()
             {
                 GetData("GetCurrentInfo",{}, function (Data)
@@ -115,7 +116,7 @@ http://194.1.237.94:80/SendTransactionHex?Hex=6F030000000000002D0000000000010000
             },1000);
         }
 
-
+        //Use API
 
         function SignTr()
         {

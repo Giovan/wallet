@@ -102,11 +102,12 @@ Note: The transaction in hex format can be obtained if you use a functions from 
     <script type="text/javascript" src="./JS/sign-lib-min.js"></script>
 
     <script>
+        //Init
         window.onload=function ()
         {
             window.MainServer={ip:"dappsgate.com",port:80};
 
-
+            //run every 1 sec for getting current block number and network time
             setInterval(function ()
             {
                 GetData("GetCurrentInfo",{}, function (Data)
@@ -117,6 +118,7 @@ Note: The transaction in hex format can be obtained if you use a functions from 
             },1000);
         }
 
+        //Use API
 
 
         function SignTr()
