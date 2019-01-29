@@ -4,7 +4,7 @@
 
 
 #### Получение текущего статуса блокчейна
-http://194.1.237.94:80/GetCurrentInfo?Diagram=0
+http://194.1.237.94/GetCurrentInfo?Diagram=0
 
 Result:
 * MaxNumBlockDB - максимальный номер блока записанный в БД (текущая высота блокчейна)
@@ -20,7 +20,7 @@ Result:
 ```
 
 #### Получение списка нод, имеющий публичный интерфейс API
-http://194.1.237.94:80/GetNodeList
+http://194.1.237.94/GetNodeList
 
 Пример результата:
 ```
@@ -29,7 +29,7 @@ http://194.1.237.94:80/GetNodeList
 
 
 #### Получение списка счетов
-http://194.1.237.94:88/GetAccountList?StartNum=0&CountNum=1
+http://194.1.237.94/GetAccountList?StartNum=0&CountNum=1
 
 Пример результата:
 ```
@@ -37,7 +37,7 @@ http://194.1.237.94:88/GetAccountList?StartNum=0&CountNum=1
 ```
 
 #### Получение списка блоков
-http://194.1.237.94:88/GetBlockList?StartNum=12373020&CountNum=1
+http://194.1.237.94/GetBlockList?StartNum=12373020&CountNum=1
 
 Пример результата:
 ```
@@ -45,7 +45,7 @@ http://194.1.237.94:88/GetBlockList?StartNum=12373020&CountNum=1
 ```
 
 #### Получение списка транзакций блока
-http://194.1.237.94:88/GetTransactionList?BlockNum=12373020?StartNum=0&CountNum=10
+http://194.1.237.94/GetTransactionList?BlockNum=12373020?StartNum=0&CountNum=10
 
 Пример результата:
 ```
@@ -54,7 +54,7 @@ http://194.1.237.94:88/GetTransactionList?BlockNum=12373020?StartNum=0&CountNum=
 
 
 #### Получение списка ДАпов
-http://194.1.237.94:88/GetDappList?StartNum=8&CountNum=1
+http://194.1.237.94/GetDappList?StartNum=8&CountNum=1
 
 Пример результата:
 ```
@@ -63,7 +63,7 @@ http://194.1.237.94:88/GetDappList?StartNum=8&CountNum=1
 
 
 #### Получение списка счетов по публичному ключу
-http://194.1.237.94:80/GetAccountListByKey?Key=027AE0DCE92D8BE1F893525B226695DDF0FE6AD756349A76777FF51F3B59067D70
+http://194.1.237.94/GetAccountListByKey?Key=027AE0DCE92D8BE1F893525B226695DDF0FE6AD756349A76777FF51F3B59067D70
 
 
 Результат:
@@ -74,7 +74,7 @@ http://194.1.237.94:80/GetAccountListByKey?Key=027AE0DCE92D8BE1F893525B226695DDF
 
 
 #### Отправка транзакции
-http://194.1.237.94:80/SendTransactionHex?Hex=6F030000000000002D00000000000100000000008400000000000100000000000000000004007465737425000000000000007AA29739FD458DF8AB1139881DAA4584CCDA3D4995B6849FB1F55F3B2EA40704116647823E97A60C70213EFA8D83CBFBEE6D753FCA6771B4792985B57186F3BCFBCEC0000000930600000000
+http://194.1.237.94/SendTransactionHex?Hex=6F030000000000002D00000000000100000000008400000000000100000000000000000004007465737425000000000000007AA29739FD458DF8AB1139881DAA4584CCDA3D4995B6849FB1F55F3B2EA40704116647823E97A60C70213EFA8D83CBFBEE6D753FCA6771B4792985B57186F3BCFBCEC0000000930600000000
 
 Результат:
 ```

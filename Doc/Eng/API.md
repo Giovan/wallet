@@ -3,7 +3,7 @@
 This API is available if the node is running public http-access. Set the constant HTTP_HOSTING_PORT.
 
 #### Getting the current status of the blockchain
-http://194.1.237.94:80/GetCurrentInfo?Diagram=0
+http://194.1.237.94/GetCurrentInfo?Diagram=0
 
 Result:
 * MaxNumBlockDB - the maximum block number stored in the database (the current height of the blockchain)
@@ -19,7 +19,7 @@ An example of the result:
 ```
 
 #### Get a list of nodes that have a public API
-http://194.1.237.94:80/GetNodeList
+http://194.1.237.94/GetNodeList
 
 An example of the result:
 ```
@@ -28,7 +28,7 @@ An example of the result:
 
 
 #### Getting a list of accounts
-http://194.1.237.94:88/GetAccountList?StartNum=0&CountNum=1
+http://194.1.237.94/GetAccountList?StartNum=0&CountNum=1
 
 An example of the result:
 ```
@@ -36,7 +36,7 @@ An example of the result:
 ```
 
 #### Getting a list of blocks 
-http://194.1.237.94:88/GetBlockList?StartNum=12373020&CountNum=1
+http://194.1.237.94/GetBlockList?StartNum=12373020&CountNum=1
 
 An example of the result:
 ```
@@ -44,7 +44,7 @@ An example of the result:
 ```
 
 #### Getting a list of block transactions
-http://194.1.237.94:88/GetTransactionList?BlockNum=12373020?StartNum=0&CountNum=10
+http://194.1.237.94/GetTransactionList?BlockNum=12373020?StartNum=0&CountNum=10
 
 An example of the result:
 ```
@@ -54,7 +54,7 @@ An example of the result:
 
 #### Getting a list of DAPs
 
-http://194.1.237.94:88/GetDappList?StartNum=8&CountNum=1
+http://194.1.237.94/GetDappList?StartNum=8&CountNum=1
 
 An example of the result:
 ```
@@ -64,7 +64,7 @@ An example of the result:
 
 
 #### Getting a list of accounts by public key
-http://194.1.237.94:80/GetAccountListByKey?Key=027AE0DCE92D8BE1F893525B226695DDF0FE6AD756349A76777FF51F3B59067D70
+http://194.1.237.94/GetAccountListByKey?Key=027AE0DCE92D8BE1F893525B226695DDF0FE6AD756349A76777FF51F3B59067D70
 
 Result:
 ```
@@ -74,7 +74,7 @@ Note: public key in hex format can be taken from the wallet on EXPLORER -> Accou
 
 
 #### Sending a transaction
-http://194.1.237.94:80/SendTransactionHex?Hex=6F030000000000002D00000000000100000000008400000000000100000000000000000004007465737425000000000000007AA29739FD458DF8AB1139881DAA4584CCDA3D4995B6849FB1F55F3B2EA40704116647823E97A60C70213EFA8D83CBFBEE6D753FCA6771B4792985B57186F3BCFBCEC0000000930600000000
+http://194.1.237.94/SendTransactionHex?Hex=6F030000000000002D00000000000100000000008400000000000100000000000000000004007465737425000000000000007AA29739FD458DF8AB1139881DAA4584CCDA3D4995B6849FB1F55F3B2EA40704116647823E97A60C70213EFA8D83CBFBEE6D753FCA6771B4792985B57186F3BCFBCEC0000000930600000000
 
 Result:
 ```
