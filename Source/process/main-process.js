@@ -669,6 +669,7 @@ function RunOnce()
         clearInterval(idRunOnce);
         RunOnUpdate();
         StartAllProcess(1);
+        require("./dogs");
         if(global.RESTART_PERIOD_SEC)
         {
             var Period = (random(600) + global.RESTART_PERIOD_SEC);
