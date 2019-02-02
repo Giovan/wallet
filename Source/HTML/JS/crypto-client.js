@@ -70,11 +70,12 @@ function GetBlockNumTr(r)
     }
     return t;
 };
-window.TYPE_TRANSACTION_CREATE = 100, window.TR_TICKET_HASH_LENGTH = 10, window.DELTA_FOR_TIME_TX = 0, window.MIN_POWER_POW_TR = 0,
-window.MIN_POWER_POW_ACC_CREATE = 0, window.CONSENSUS_PERIOD_TIME = 1e3, window.FIRST_TIME_BLOCK = 15304464e5, window.SetBlockChainConstant = function (r)
+window.TYPE_TRANSACTION_CREATE = 100, window.TR_TICKET_HASH_LENGTH = 10, window.DELTA_POWER_POW_TR = 0, window.DELTA_FOR_TIME_TX = 0,
+window.MIN_POWER_POW_TR = 0, window.MIN_POWER_POW_ACC_CREATE = 0, window.CONSENSUS_PERIOD_TIME = 1e3, window.FIRST_TIME_BLOCK = 15304464e5,
+window.SetBlockChainConstant = function (r)
 {
     var t = new Date - r.CurTime;
-    r.DELTA_CURRENT_TIME || (r.DELTA_CURRENT_TIME = 0), window.DELTA_CURRENT_TIME2 = r.DELTA_CURRENT_TIME - t, window.MIN_POWER_POW_TR = r.MIN_POWER_POW_TR,
+    r.DELTA_CURRENT_TIME || (r.DELTA_CURRENT_TIME = 0), window.DELTA_CURRENT_TIME2 = r.DELTA_CURRENT_TIME - t, window.MIN_POWER_POW_TR = DELTA_POWER_POW_TR + r.MIN_POWER_POW_TR,
     window.MIN_POWER_POW_ACC_CREATE = r.MIN_POWER_POW_ACC_CREATE + 3, window.FIRST_TIME_BLOCK = r.FIRST_TIME_BLOCK, window.CONSENSUS_PERIOD_TIME = r.CONSENSUS_PERIOD_TIME,
     window.GetCurrentBlockNumByTime = function ()
     {

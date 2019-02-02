@@ -198,15 +198,11 @@ function SendBlockFile(response,BlockNum,TrNum)
             if(Body && Body[0] === global.TYPE_TRANSACTION_FILE)
             {
                 var TR = DApps.File.GetObjectTransaction(Body);
-                if(TR.ContentType.indexOf("html") ==  - 1)
-                {
-                    response.writeHead(200, {'Content-Type':TR.ContentType});
-                    response.end(TR.Data);
-                    return ;
-                }
+                if(TR.ContentType.toLowerCase().indexOf("html") >= 0)
+                    response.writeHead(200, {'Content-Type':"text/plain"});
                 else
-                {
-                }
+                    response.writeHead(200, {'Content-Type':TR.ContentType});
+                response.end(TR.Data);
             }
         }
     }

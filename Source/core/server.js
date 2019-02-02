@@ -430,7 +430,8 @@ module.exports = class CTransport extends require("./connect")
         var Hash = this.GetHashFromData(Meta);
         if(CompareArr(Hash, Meta.Hash) !== 0)
         {
-            TO_ERROR_LOG("TRANSPORT", 645, "Error hash Buffer")
+            if(global.WATCHDOG_DEV)
+                TO_ERROR_LOG("TRANSPORT", 645, "Error hash Buffer")
             return undefined;
         }
         if(Meta.TypeData === STR_TYPE)

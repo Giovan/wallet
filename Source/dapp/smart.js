@@ -458,7 +458,7 @@ class SmartApp extends require("./dapp")
         if(global.LOCAL_RUN || global.TEST_NETWORK)
             this.RowHole = {}
         else
-            this.RowHole = {"19":1, "26":1, "27":1}
+            this.RowHole = {"19":1, "22":1, "23":1, "24":1, "26":1, "27":1, "30":1}
     }
     IsHole(num)
     {

@@ -385,16 +385,16 @@ HostingCaller.GetCurrentInfo = function (Params)
         MaxAccID:DApps.Accounts.GetMaxAccount(), MaxDappsID:DApps.Smart.GetMaxNum(), NETWORK:global.NETWORK, CurTime:Date.now(), DELTA_CURRENT_TIME:DELTA_CURRENT_TIME,
         MIN_POWER_POW_TR:MIN_POWER_POW_TR, FIRST_TIME_BLOCK:FIRST_TIME_BLOCK, CONSENSUS_PERIOD_TIME:CONSENSUS_PERIOD_TIME, MIN_POWER_POW_ACC_CREATE:MIN_POWER_POW_ACC_CREATE,
     };
-    if(typeof Params === "object" && Params.Diagram)
+    if(typeof Params === "object" && Params.Diagram == 1)
     {
         var arrNames = ["MAX:ALL_NODES", "MAX:HASH_RATE_G"];
         Ret.arr = GET_STATDIAGRAMS(arrNames);
     }
-    if(typeof Params === "object" && Params.BlockChain)
+    if(typeof Params === "object" && Params.BlockChain == 1)
     {
         Ret.BlockChain = NodeBlockChain;
     }
-    if(typeof Params === "object" && Params.ArrLog)
+    if(typeof Params === "object" && Params.ArrLog == 1)
     {
         var ArrLog = [];
         for(var i = 0; i < ArrLogClient.length; i++)
@@ -408,7 +408,7 @@ HostingCaller.GetCurrentInfo = function (Params)
     }
     return Ret;
 };
-var MaxCountViewRows = 20;
+var MaxCountViewRows = global.HTTP_MAX_COUNT_ROWS;
 HostingCaller.GetAccountList = function (Params)
 {
     if(typeof Params !== "object")

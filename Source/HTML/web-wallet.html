@@ -385,7 +385,7 @@
             }
 
 
-            GetData("GetCurrentInfo",{Diagram:IsVisibleBlock("idStatBlock"),ArrLog:WasSendTr}, function (Data)
+            GetData("GetCurrentInfo",{Diagram:IsVisibleBlock("idStatBlock")?1:0,ArrLog:WasSendTr}, function (Data)
             {
                 if(!Data || !Data.result)
                     return;
