@@ -15,8 +15,21 @@ function show()
 {
     if(global.DApps && GENERATE_BLOCK_ACCOUNT)
     {
-        var o = DApps.Accounts.GetRowsAccounts(GENERATE_BLOCK_ACCOUNT, 1)[0].Value.SumCOIN;
-        200 < o - lastcoin && (ToLog("ID:" + GENERATE_BLOCK_ACCOUNT), ToLog("its forked  restart now "), RestartNode()), lastcoin = o;
+        var arr = DApps.Accounts.GetRowsAccounts(GENERATE_BLOCK_ACCOUNT, 1);
+        var Data = arr[0];
+        var sumcoin = Data.Value.SumCOIN;
+        var delta = sumcoin - lastcoin;
+        if(delta > 200)
+        {
+            ToLog("ID:" + GENERATE_BLOCK_ACCOUNT);
+            ToLog("its forked  restart now ");
+            RestartNode();
+        }
+        lastcoin = sumcoin;
     }
 };
-global.COREY_WATCH_DOG && (ToLog("===START COREY_WATCH_DOG=="), setInterval(show, 35e3));
+if(global.COREY_WATCH_DOG)
+{
+    ToLog("===START COREY_WATCH_DOG==");
+    setInterval(show, 35000);
+}
